@@ -4,6 +4,7 @@
 #include <QtCore/QObject>
 #include <QColor>
 #include <QtQml>
+#include "EventLog.h"
 
 class WebSocketClient : public QObject
 {
@@ -34,6 +35,7 @@ Q_SIGNALS:
     void valve1StateChanged();
     void valve2StateChanged();
     void valve3StateChanged();
+    void logMessageToBeDisplayed(const QString message, const LogEntry::LogLevel logLevel = LogEntry::LogLevel::Info, const QString no = "", const QColor color = Qt::transparent);
 
 public:
     WebSocketClient();

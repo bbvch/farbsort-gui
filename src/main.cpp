@@ -6,10 +6,12 @@
 #include <QQmlEngine>
 #include <QResource>
 #include <QSharedPointer>
+#include <QVariant>
 
 #include "websocketclientimplementation.h"
 #include "websocketclientsimulation.h"
 #include "countinglogic.h"
+#include "EventLog.h"
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +49,9 @@ int main(int argc, char *argv[])
     QObject::connect(webSocketClient.data(), SIGNAL(lightbarrierFourStateChanged(bool)), &countingLogic, SLOT(trayTwoLightbarrierActivationChanged(bool)));
     QObject::connect(webSocketClient.data(), SIGNAL(lightbarrierFiveStateChanged(bool)), &countingLogic, SLOT(trayThreeLightbarrierActivationChanged(bool)));
 
+    EventLog eventLog;
+    QObject::connect(webSocketClient.data(), SIGNAL(logMessageToBeDisplayed(QString,LogEntry::LogLevel,QString,QColor)), &eventLog, SLOT(addLogEntry(QString,LogEntry::LogLevel,QString,QColor)));
+
     // start application
     QResource::registerResource("qml.qrc");
     QResource::registerResource("images.qrc");
@@ -55,6 +60,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("websocketClient", webSocketClient.data());
     engine.rootContext()->setContextProperty("simulationModeActive", QVariant(parser.isSet("simulation")));
     engine.rootContext()->setContextProperty("countingLogic", &countingLogic);
+    engine.rootContext()->setContextProperty("logList", &eventLog);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();

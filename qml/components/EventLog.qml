@@ -11,6 +11,8 @@ Rectangle {
     border.color: "transparent"
 
     RowLayout{
+        property int currentRow : 0
+
         id: titleLayout
         anchors{left:parent.left;right: parent.right; top: parent.top; }
         anchors.rightMargin: Style.smallMargin
@@ -44,7 +46,14 @@ Rectangle {
                 source: "qrc:/arrow_up.png"
             }
 
-            onPressed: scale = 0.9
+            onPressed: {
+                scale = 0.9
+                // get current row on top of tableView -> rowAt needs to be taken of coordinates > 0
+                titleLayout.currentRow = eventTableView.tableView.rowAt(10, 10)
+                // if top of tableView not yet reached, scroll up
+                titleLayout.currentRow = (titleLayout.currentRow < 4) ? 0 : (titleLayout.currentRow - 4)
+                eventTableView.tableView.positionViewAtRow(titleLayout.currentRow, ListView.Beginning)
+            }
             onReleased: scale = 1.0
 
             Layout.alignment: Qt.AlignRight
@@ -61,7 +70,14 @@ Rectangle {
                 source: "qrc:/arrow_down.png"
             }
 
-            onPressed: scale = 0.9
+            onPressed: {
+                scale = 0.9
+                // get current row on top of tableView -> rowAt needs to be taken of coordinates > 0
+                titleLayout.currentRow = eventTableView.tableView.rowAt(10, 10)
+                // if bottom of tableView not yet reached, scroll down
+                titleLayout.currentRow = (titleLayout.currentRow > (eventTableView.tableView.rowCount - 5)) ? (eventTableView.tableView.rowCount - 1) : (titleLayout.currentRow + 4)
+                eventTableView.tableView.positionViewAtRow(titleLayout.currentRow, ListView.Beginning)
+            }
             onReleased: scale = 1.0
 
             Layout.alignment: Qt.AlignRight

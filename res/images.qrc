@@ -20,6 +20,8 @@
         <file alias="blue_chip.png">images/items/blue_chip.png</file>
         <file alias="red_chip.png">images/items/red_chip.png</file>
         <file alias="white_chip.png">images/items/white_chip.png</file>
+		<file alias="info.png">images/items/info.png</file>
+		<file alias="error.png">images/items/error.png</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="conveyor.svg">images/conveyor.svg</file>

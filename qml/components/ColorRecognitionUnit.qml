@@ -42,9 +42,32 @@ Rectangle {
         // visible: { color.a > 0 }
     }
 
+    // Only change state, if detectedColor is not transparent
+    // If detectedColor != transparent detected, set state to DETECT and reset after 1s
     function onColorDetected() {
-        colorRecongnition.state = DETECT
+        if(detectedColor != "#00000000")
+        {
+            colorRecongnition.state = "DETECT"
+            delayedStateReset(500)
+        }
     }
+
+    Timer {
+        id: timer
+        onTriggered: resetState()
+    }
+
+    function delayedStateReset(delayTime)
+    {
+        timer.interval = delayTime;
+        timer.repeat = false;
+        timer.start();
+    }
+
+    function resetState() {
+        colorRecongnition.state = "NOTDETECT"
+    }
+
 
     Component.onCompleted: {
         websocketClient.detectedColorChanged.connect(onColorDetected)

@@ -24,7 +24,7 @@ Rectangle {
 
         onButtonClicked: {
             if(settingsTitle.diagnosticButton === button && settingsStackView.currentItem !== diagnosticScreen){
-                settingsStackView.push(diagnosticScreen)
+                settingsStackView.pop(diagnosticScreen)
             }
             else if(settingsTitle.configurationButton === button && settingsStackView.currentItem !== configurationScreen){
                 settingsStackView.push(configurationScreen)

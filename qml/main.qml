@@ -70,7 +70,7 @@ Window {
         visible: false
 
         onSettingsExitClicked: {
-            mainStackView.push(mainScreen)
+            mainStackView.pop(mainScreen)
             websocketClient.sendProductionModeRequest(true)
         }
     }

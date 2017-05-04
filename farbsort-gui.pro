@@ -13,7 +13,8 @@ SOURCES += src/main.cpp \
     src/websocketclientimplementation.cpp \
     src/websocketclient.cpp \
     src/websocketclientsimulation.cpp \
-    src/countinglogic.cpp
+    src/countinglogic.cpp \
+    src/EventLog.cpp
 
 HEADERS += \
     include/websocketclient.h \
