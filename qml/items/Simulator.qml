@@ -431,6 +431,36 @@ Rectangle {
                 if(ejectorThreeValveState)
                     startEjecting(3)
             }
+
+            // when stone is removed from tray one all stones in the tray are removed
+            readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
+            onTrayOneActivatedChanged: {
+                if(!trayOneActivated &&
+                        lightbarrierTrayOne.trayColor == color &&
+                        state == "reached") {
+                    destroy()
+                }
+            }
+
+            // when stone is removed from tray two all stones in the tray are removed
+            readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
+            onTrayTwoActivatedChanged: {
+                if(!trayTwoActivated &&
+                        lightbarrierTrayTwo.trayColor == color &&
+                        state == "reached") {
+                    destroy()
+                }
+            }
+
+            // when stone is removed from tray three all stones in the tray are removed
+            readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
+            onTrayThreeActivatedChanged: {
+                if(!trayThreeActivated &&
+                        lightbarrierTrayThree.trayColor == color &&
+                        state == "reached") {
+                    destroy()
+                }
+            }
         }
     }
 
