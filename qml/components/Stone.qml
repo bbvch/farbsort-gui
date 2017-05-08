@@ -115,8 +115,11 @@ Item {
                 {
                     if(needsEjection())
                         state = "moved"
-                    else
+                    else {
                         state = "reached"
+                        // stone is moved to garbage bin - set timeout to destroy stone
+                        deletionTimer.start()
+                    }
                 }
             }
         },
@@ -151,6 +154,12 @@ Item {
             }
         }
     ]
+
+    Timer {
+        id: deletionTimer
+        interval: 10000; running: false; repeat: false
+        onTriggered: { stoneObject.destroy(); }
+    }
 
     Rectangle {
         id: circle
