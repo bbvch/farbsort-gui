@@ -20,9 +20,6 @@ Rectangle {
     property alias lightbarrierTrayTwo: lightbarrierTrayTwo
     property alias lightbarrierTrayThree: lightbarrierTrayThree
 
-    // signal to inform about detected color
-    signal colorDetected(color color, int trayId, int finalPosition)
-
     // decides to which tray the stone needs to be moved
     function onColorDetected(color) {
         var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
@@ -38,8 +35,10 @@ Rectangle {
             trayId = 3
         }
 
-        colorDetected(color, trayId, finalPosition)
+        stoneHandler.colorDetected(color, trayId, finalPosition)
     }
+
+
 
 // The Conveyor has to be outside of the grid layout because of gridlayout warning "cell already taken"
 
@@ -403,18 +402,7 @@ Rectangle {
             conveyorSpeed:      1500
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
-
-            Component.onCompleted: {
-                simulator.colorDetected.connect(stoneInstance.onColorDetected)
-            }
-
-            // used to get informed about lightbarrier after detector state changes
-            readonly property bool lightbarrierAfterColorDetectorState: lightbarrierAfterColorDetectionState
-            // lightbarrier is triggered, moves the stone to the position and continues animation
-            onLightbarrierAfterColorDetectorStateChanged: {
-                if(lightbarrierAfterColorDetectorState)
-                    moveConveyor()
-            }
+            _stoneHandler: stoneHandler
 
             // send ejectorOne valve state to stone
             readonly property bool ejectorOneValveState: ejectorOne.valveState
@@ -436,43 +424,123 @@ Rectangle {
                 if(ejectorThreeValveState)
                     startEjecting(3)
             }
-
-            // when stone is removed from tray one all stones in the tray are removed
-            readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
-            onTrayOneActivatedChanged: {
-                if(!trayOneActivated &&
-                        lightbarrierTrayOne.trayColor == color &&
-                        state == "reached") {
-                    destroy()
-                }
-            }
-
-            // when stone is removed from tray two all stones in the tray are removed
-            readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
-            onTrayTwoActivatedChanged: {
-                if(!trayTwoActivated &&
-                        lightbarrierTrayTwo.trayColor == color &&
-                        state == "reached") {
-                    destroy()
-                }
-            }
-
-            // when stone is removed from tray three all stones in the tray are removed
-            readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
-            onTrayThreeActivatedChanged: {
-                if(!trayThreeActivated &&
-                        lightbarrierTrayThree.trayColor == color &&
-                        state == "reached") {
-                    destroy()
-                }
-            }
         }
     }
 
+    // no explicit event for stone placed is available.
+    // this is a workaround to place a new stone on the conveyor.
     onLightbarrierBeforeColorDetectionStateChanged: {
         if(lightbarrierBeforeColorDetectionState && conveyor.running) {
+            stoneHandler.stonePlaced()
+        }
+    }
+
+    // lightbarrier is triggered, moves the stone to the position and continues animation
+    onLightbarrierAfterColorDetectionStateChanged: {
+        if(lightbarrierAfterColorDetectionState)
+            stoneHandler.detectorEndReached()
+    }
+
+    // when stone is removed from tray one all stones in the tray are removed
+    readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
+    onTrayOneActivatedChanged: {
+        if(!trayOneActivated) {
+            stoneHandler.removeStonesFromTray(1)
+        }
+    }
+
+    // when stone is removed from tray two all stones in the tray are removed
+    readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
+    onTrayTwoActivatedChanged: {
+        if(!trayTwoActivated) {
+            stoneHandler.removeStonesFromTray(2)
+        }
+    }
+
+    // when stone is removed from tray three all stones in the tray are removed
+    readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
+    onTrayThreeActivatedChanged: {
+        if(!trayThreeActivated) {
+            stoneHandler.removeStonesFromTray(3)
+        }
+    }
+
+    Item {
+        id: stoneHandler
+        property var stones: []
+
+        function stonePlaced()
+        {
             var stone = preconfigureStone.createObject(simulator);
             stone.startDetection()
+            stones.push(stone);
+            console.log("added stone to list: # of stone=" + stones.length)
+        }
+
+        // handle colorDetected event
+        function colorDetected(color, trayId, position)
+        {
+            var handled = false
+            var index = 0
+            while(index < stones.length) {
+                var stone = stones[index]
+                if(stone) {
+                    if(stone.handleColorDetected(color, trayId, position)) {
+                        handled = true
+                        break;
+                    }
+                }
+                index++
+            }
+            if(!handled) {
+                console.log("WARNING: colorDetected event was not handled!")
+            }
+        }
+
+        // handle detectorEndReached event
+        function detectorEndReached() {
+            var handled = false
+            var index = 0
+            while(index < stones.length) {
+                var stone = stones[index]
+                if(stone) {
+                    if(stone.handleDetectorEndReached()) {
+                        handled = true
+                        break;
+                    }
+                }
+                index++
+            }
+            if(!handled) {
+                console.log("WARNING: detectorEndReached event was not handled!")
+            }
+        }
+
+        // removes all stones in the given tray
+        function removeStonesFromTray(trayId) {
+            var index = 0
+            while(index < stones.length) {
+                var stone = stones[index]
+                if(stone) {
+                    if(stone.reachedTray(trayId)) {
+                        stones.splice(index, 1)
+                        console.log("INFO: handled removeStonesFromTray on tray #" + trayId + " .... remaining " + stones.length)
+                        stone.destroy()
+                        continue
+                    }
+                }
+                index++
+            }
+        }
+
+        // removes the given stone
+        function removeStone(stoneToRemove) {
+            var index = stones.indexOf(stoneToRemove)
+            if(index >= 0) {
+                stones.splice(index, 1)
+                stoneToRemove.destroy()
+                console.log("INFO: handled removeStone .... remaining " + stones.length)
+            }
         }
     }
 }

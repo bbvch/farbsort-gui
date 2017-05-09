@@ -11,12 +11,45 @@ Item {
     property int lightbarrierAfterDetectorXPos: 300
     property int trayId: 0
     property int destinationXPos: 300
+    // reference to the stoneHandler - needed to remove the stone
+    property var _stoneHandler: null
+    // flag to store if the color was already assigned
+    property bool _colorAssigned: false
 
     function startDetection() {
         stoneObject.x = stoneObject.startPosX
         stoneObject.y = stoneObject.startPosY
         stoneObject.color = "transparent"
         state = "detecting"
+    }
+
+    // tries to assign the detected color to the stone
+    // return: true, if the operation was successful, otherwise false
+    function handleColorDetected(color, trayId, destinationXPos) {
+        // stone must be under the color detector and no color was assigned before
+        if("detecting" === state && !stoneObject._colorAssigned) {
+            stoneObject.color = color
+            stoneObject.trayId = trayId
+            stoneObject.destinationXPos = destinationXPos - radius
+            stoneObject._colorAssigned = true
+            console.log("Stone: handled colorDetected event for color " + color)
+            return true
+        }
+        return false
+    }
+
+    // tries to move the stone to the end of the detector
+    // return: true, if the operation was successful, otherwise false
+    function handleDetectorEndReached() {
+        if("detecting" === state) {
+            stoneObject.state = "detected"
+            updateConveyorAnimationTime()
+            stoneObject.state = "moving"
+
+            console.log("Stone: handled detectorEndReached event")
+            return true;
+        }
+        return false
     }
 
     function startEjecting(trayId) {
@@ -30,31 +63,6 @@ Item {
         }
     }
 
-    function moveConveyor() {
-        updateConveyorAnimationTime()
-        if("detecting" === state) {
-            state = "detected"
-        }
-        if("detected" === state) {
-            state = "moving"
-        }
-    }
-
-    function onColorDetected(color, trayId, destinationXPos) {
-        // stone must be under the color detector and no color was assigned before
-        if("detecting" === state && 0 === stoneObject.color.a) {
-            stoneObject.color = color
-            stoneObject.trayId = trayId
-            stoneObject.destinationXPos = destinationXPos - radius
-        }
-    }
-
-    function onDetectorEndReached() {
-        if("detecting" === state) {
-            state = "detected"
-        }
-    }
-
     // checks if a valid ejector id was set
     function needsEjection() {
         return trayId > 0
@@ -62,6 +70,10 @@ Item {
 
     function updateConveyorAnimationTime() {
         conveyorAnimation.duration = conveyorSpeed / (lightbarrierAfterDetectorXPos - startPosX) * (destinationXPos - lightbarrierAfterDetectorXPos)
+    }
+
+    function reachedTray(trayId) {
+        return "reached" === stoneObject.state && trayId === stoneObject.trayId
     }
 
     states: [
@@ -157,7 +169,7 @@ Item {
     Timer {
         id: deletionTimer
         interval: 10000; running: false; repeat: false
-        onTriggered: { stoneObject.destroy(); }
+        onTriggered: { _stoneHandler.removeStone(stoneObject); }
     }
 
     Rectangle {
@@ -171,7 +183,7 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                stoneObject.destroy();
+                _stoneHandler.removeStone(stoneObject);
             }
         }
     }
