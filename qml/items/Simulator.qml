@@ -6,6 +6,8 @@ import QtQml 2.0
 import ".."
 import "../components"
 
+import "../components/StoneHandler.js" as StoneHandler
+
 Rectangle {
     id: simulator
     color: "white"
@@ -35,7 +37,7 @@ Rectangle {
             trayId = 3
         }
 
-        stoneHandler.colorDetected(color, trayId, finalPosition)
+        StoneHandler.colorDetected(color, trayId, finalPosition)
     }
 
 
@@ -402,7 +404,7 @@ Rectangle {
             conveyorSpeed:      1500
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
-            _stoneHandler: stoneHandler
+            _stoneHandler: StoneHandler
         }
     }
 
@@ -410,21 +412,21 @@ Rectangle {
     // this is a workaround to place a new stone on the conveyor.
     onLightbarrierBeforeColorDetectionStateChanged: {
         if(lightbarrierBeforeColorDetectionState && conveyor.running) {
-            stoneHandler.stonePlaced()
+            StoneHandler.stonePlaced()
         }
     }
 
     // lightbarrier is triggered, moves the stone to the position and continues animation
     onLightbarrierAfterColorDetectionStateChanged: {
         if(lightbarrierAfterColorDetectionState)
-            stoneHandler.detectorEndReached()
+            StoneHandler.detectorEndReached()
     }
 
     // when stone is removed from tray one all stones in the tray are removed
     readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
     onTrayOneActivatedChanged: {
         if(!trayOneActivated) {
-            stoneHandler.removeStonesFromTray(1)
+            StoneHandler.removeStonesFromTray(1)
         }
     }
 
@@ -432,7 +434,7 @@ Rectangle {
     readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
     onTrayTwoActivatedChanged: {
         if(!trayTwoActivated) {
-            stoneHandler.removeStonesFromTray(2)
+            StoneHandler.removeStonesFromTray(2)
         }
     }
 
@@ -440,7 +442,7 @@ Rectangle {
     readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
     onTrayThreeActivatedChanged: {
         if(!trayThreeActivated) {
-            stoneHandler.removeStonesFromTray(3)
+            StoneHandler.removeStonesFromTray(3)
         }
     }
 
@@ -448,119 +450,20 @@ Rectangle {
     readonly property bool ejectorOneValveState: ejectorOne.valveState
     onEjectorOneValveStateChanged: {
         if(ejectorOneValveState)
-            stoneHandler.startEjecting(1)
+            StoneHandler.startEjecting(1)
     }
 
     // send ejectorTwo valve state to stone
     readonly property bool ejectorTwoValveState: ejectorTwo.valveState
     onEjectorTwoValveStateChanged: {
         if(ejectorTwoValveState)
-            stoneHandler.startEjecting(2)
+            StoneHandler.startEjecting(2)
     }
 
     // send ejectorThree valve state to stone
     readonly property bool ejectorThreeValveState: ejectorThree.valveState
     onEjectorThreeValveStateChanged: {
         if(ejectorThreeValveState)
-            stoneHandler.startEjecting(3)
-    }
-
-    Item {
-        id: stoneHandler
-        property var stones: []
-
-        function stonePlaced()
-        {
-            var stone = preconfigureStone.createObject(simulator);
-            stone.startDetection()
-            stones.push(stone);
-            console.log("added stone to list: # of stone=" + stones.length)
-        }
-
-        // handle colorDetected event
-        function colorDetected(color, trayId, position)
-        {
-            var handled = false
-            var index = 0
-            while(index < stones.length) {
-                var stone = stones[index]
-                if(stone) {
-                    if(stone.handleColorDetected(color, trayId, position)) {
-                        handled = true
-                        break;
-                    }
-                }
-                index++
-            }
-            if(!handled) {
-                console.log("WARNING: colorDetected event was not handled!")
-            }
-        }
-
-        // handle detectorEndReached event
-        function detectorEndReached() {
-            var handled = false
-            var index = 0
-            while(index < stones.length) {
-                var stone = stones[index]
-                if(stone) {
-                    if(stone.handleDetectorEndReached()) {
-                        handled = true
-                        break;
-                    }
-                }
-                index++
-            }
-            if(!handled) {
-                console.log("WARNING: detectorEndReached event was not handled!")
-            }
-        }
-
-        // handle startEjecting event
-        function startEjecting(trayId)
-        {
-            var handled = false
-            var index = 0
-            while(index < stones.length) {
-                var stone = stones[index]
-                if(stone) {
-                    if(stone.startEjecting(trayId)) {
-                        handled = true
-                        break;
-                    }
-                }
-                index++
-            }
-            if(!handled) {
-                console.log("WARNING: detectorEndReached event was not handled!")
-            }
-        }
-
-        // removes all stones in the given tray
-        function removeStonesFromTray(trayId) {
-            var index = 0
-            while(index < stones.length) {
-                var stone = stones[index]
-                if(stone) {
-                    if(stone.reachedTray(trayId)) {
-                        stones.splice(index, 1)
-                        console.log("INFO: handled removeStonesFromTray on tray #" + trayId + " .... remaining " + stones.length)
-                        stone.destroy()
-                        continue
-                    }
-                }
-                index++
-            }
-        }
-
-        // removes the given stone
-        function removeStone(stoneToRemove) {
-            var index = stones.indexOf(stoneToRemove)
-            if(index >= 0) {
-                stones.splice(index, 1)
-                stoneToRemove.destroy()
-                console.log("INFO: handled removeStone .... remaining " + stones.length)
-            }
-        }
+            StoneHandler.startEjecting(3)
     }
 }
