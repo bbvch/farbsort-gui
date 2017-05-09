@@ -53,14 +53,15 @@ Item {
     }
 
     function startEjecting(trayId) {
-        if(trayId === stoneObject.trayId) {
-            if("moving" === state) {
-                state = "moved"
-            }
-            if("moved" === state && needsEjection()) {
+        if(trayId === stoneObject.trayId &&
+           ("moving" == stoneObject.state || "moved" == stoneObject.state)) {
+            stoneObject.state = "moved"
+            if(needsEjection()) {
                 state = "ejecting"
             }
+            return true
         }
+        return false
     }
 
     // checks if a valid ejector id was set

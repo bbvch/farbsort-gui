@@ -403,27 +403,6 @@ Rectangle {
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
             _stoneHandler: stoneHandler
-
-            // send ejectorOne valve state to stone
-            readonly property bool ejectorOneValveState: ejectorOne.valveState
-            onEjectorOneValveStateChanged: {
-                if(ejectorOneValveState)
-                    startEjecting(1)
-            }
-
-            // send ejectorTwo valve state to stone
-            readonly property bool ejectorTwoValveState: ejectorTwo.valveState
-            onEjectorTwoValveStateChanged: {
-                if(ejectorTwoValveState)
-                    startEjecting(2)
-            }
-
-            // send ejectorThree valve state to stone
-            readonly property bool ejectorThreeValveState: ejectorThree.valveState
-            onEjectorThreeValveStateChanged: {
-                if(ejectorThreeValveState)
-                    startEjecting(3)
-            }
         }
     }
 
@@ -463,6 +442,27 @@ Rectangle {
         if(!trayThreeActivated) {
             stoneHandler.removeStonesFromTray(3)
         }
+    }
+
+    // send ejectorOne valve state to stone
+    readonly property bool ejectorOneValveState: ejectorOne.valveState
+    onEjectorOneValveStateChanged: {
+        if(ejectorOneValveState)
+            stoneHandler.startEjecting(1)
+    }
+
+    // send ejectorTwo valve state to stone
+    readonly property bool ejectorTwoValveState: ejectorTwo.valveState
+    onEjectorTwoValveStateChanged: {
+        if(ejectorTwoValveState)
+            stoneHandler.startEjecting(2)
+    }
+
+    // send ejectorThree valve state to stone
+    readonly property bool ejectorThreeValveState: ejectorThree.valveState
+    onEjectorThreeValveStateChanged: {
+        if(ejectorThreeValveState)
+            stoneHandler.startEjecting(3)
     }
 
     Item {
@@ -505,6 +505,26 @@ Rectangle {
                 var stone = stones[index]
                 if(stone) {
                     if(stone.handleDetectorEndReached()) {
+                        handled = true
+                        break;
+                    }
+                }
+                index++
+            }
+            if(!handled) {
+                console.log("WARNING: detectorEndReached event was not handled!")
+            }
+        }
+
+        // handle startEjecting event
+        function startEjecting(trayId)
+        {
+            var handled = false
+            var index = 0
+            while(index < stones.length) {
+                var stone = stones[index]
+                if(stone) {
+                    if(stone.startEjecting(trayId)) {
                         handled = true
                         break;
                     }
