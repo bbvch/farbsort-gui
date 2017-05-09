@@ -17,7 +17,6 @@ class WebSocketClient : public QObject
     Q_PROPERTY(bool lightbarrierThreeState READ lightbarrierThreeState NOTIFY lightbarrierThreeStateChanged)
     Q_PROPERTY(bool lightbarrierFourState READ lightbarrierFourState NOTIFY lightbarrierFourStateChanged)
     Q_PROPERTY(bool lightbarrierFiveState READ lightbarrierFiveState NOTIFY lightbarrierFiveStateChanged)
-    Q_PROPERTY(QColor detectedColor READ detectedColor NOTIFY detectedColorChanged)
     Q_PROPERTY(bool valve1State READ valve1State NOTIFY valve1StateChanged)
     Q_PROPERTY(bool valve2State READ valve2State NOTIFY valve2StateChanged)
     Q_PROPERTY(bool valve3State READ valve3State NOTIFY valve3StateChanged)
@@ -31,7 +30,7 @@ Q_SIGNALS:
     void lightbarrierThreeStateChanged(const bool active);
     void lightbarrierFourStateChanged(const bool active);
     void lightbarrierFiveStateChanged(const bool active);
-    void detectedColorChanged();
+    void colorDetected(const QColor& color);
     void valve1StateChanged();
     void valve2StateChanged();
     void valve3StateChanged();
@@ -62,7 +61,6 @@ protected:
     bool lightbarrierThreeState() const { return m_lightbarrierThreeState; }
     bool lightbarrierFourState() const { return m_lightbarrierFourState; }
     bool lightbarrierFiveState() const { return m_lightbarrierFiveState; }
-    QColor detectedColor() const { return m_detectedColor; }
     bool valve1State() const { return m_valve1State; }
     bool valve2State() const { return m_valve2State; }
     bool valve3State() const { return m_valve3State; }
@@ -71,7 +69,6 @@ protected:
     void setCompressorRunning(const bool compressorRunning);
     /** sets the state for the given light barrier */
     void setLightbarrierState(const int number, const bool state);
-    void setDetectedColor(const QColor color);
     /** sets the internal valve state */
     void setValveState(const int valveId, const bool state);
 
@@ -84,7 +81,6 @@ protected:
     bool m_lightbarrierThreeState;
     bool m_lightbarrierFourState;
     bool m_lightbarrierFiveState;
-    QColor m_detectedColor;
     bool m_valve1State;
     bool m_valve2State;
     bool m_valve3State;

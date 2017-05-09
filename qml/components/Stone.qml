@@ -45,8 +45,7 @@ Item {
         if("detecting" === state && 0 === stoneObject.color.a) {
             stoneObject.color = color
             stoneObject.trayId = trayId
-            stoneObject.destinationXPos = destinationXPos
-            console.log("--- color detected event received: color=" + color + ", trayId=" + trayId + ", destinationXPos=" + destinationXPos)
+            stoneObject.destinationXPos = destinationXPos - radius
         }
     }
 
@@ -165,7 +164,7 @@ Item {
         id: circle
         anchors.fill: parent
         radius: 90
-        color: "red"
+        color: "transparent"
         border.color: "black"
         border.width: parent.width * 0.05
 

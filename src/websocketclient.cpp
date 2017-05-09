@@ -12,7 +12,6 @@ WebSocketClient::WebSocketClient()
     , m_lightbarrierThreeState(false)
     , m_lightbarrierFourState(false)
     , m_lightbarrierFiveState(false)
-    , m_detectedColor(QColor("transparent"))
     , m_valve1State(false)
     , m_valve2State(false)
     , m_valve3State(false)
@@ -47,7 +46,6 @@ void WebSocketClient::setLightbarrierState(const int number, const bool state)
 
                 if(state) {
                     // TODO: move to a control class
-                    setDetectedColor(Qt::transparent);
                     emit logMessageToBeDisplayed("Stone enters color recognition", LogEntry::LogLevel::Info, "S1");
                 }
             } break;
@@ -95,16 +93,6 @@ void WebSocketClient::setLightbarrierState(const int number, const bool state)
         default: {
             qWarning() << "wsc: received unknown lightbarrier state number: " << number;
         } break;
-    }
-}
-
-void WebSocketClient::setDetectedColor(const QColor color)
-{
-    if(color != m_detectedColor) {
-        m_detectedColor = color;
-        if(0 != color.alpha())
-            emit logMessageToBeDisplayed("Color detected", LogEntry::LogLevel::Info, "", color);
-        emit detectedColorChanged();
     }
 }
 

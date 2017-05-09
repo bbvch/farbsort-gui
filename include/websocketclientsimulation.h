@@ -24,7 +24,7 @@ public slots:
     /** slot to set the state of an lightbarrier */
     void lightbarrierActivated(int number, bool state);
     /** slot to set the detected color */
-    void sendDetectedColor(const QColor color);
+    void sendDetectedColor(const QColor& color);
 };
 
 #endif // WEBSOCKETCLIENTSIMULATION_H

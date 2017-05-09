@@ -193,7 +193,7 @@ void WebSocketClientImplementation::onTextMessageReceived(QString message)
     // received message color=...
     else if(message.startsWith("color=")) {
         QColor color = QColor(message.right(message.length() - 6));
-        setDetectedColor(color);
+        emit colorDetected(color);
     }
 
     // received log message

@@ -33,7 +33,6 @@ Rectangle {
             lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
             lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
             lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
-            detectedColor:                                websocketClient.detectedColor
             lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
             lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
             lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
@@ -48,6 +47,10 @@ Rectangle {
             Layout.preferredHeight: parent.height * 0.75
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             Layout.margins: 0
+
+            Component.onCompleted: {
+                websocketClient.colorDetected.connect(simulator.onColorDetected)
+            }
         }
 
         StartStopControl {

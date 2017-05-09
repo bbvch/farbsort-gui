@@ -19,7 +19,27 @@ Rectangle {
     property alias lightbarrierTrayOne: lightbarrierTrayOne
     property alias lightbarrierTrayTwo: lightbarrierTrayTwo
     property alias lightbarrierTrayThree: lightbarrierTrayThree
-    property alias detectedColor: colorRecongnition.detectedColor
+
+    // signal to inform about detected color
+    signal colorDetected(color color, int trayId, int finalPosition)
+
+    // decides to which tray the stone needs to be moved
+    function onColorDetected(color) {
+        var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
+        var trayId = 0
+        if(color === lightbarrierTrayOne.trayColor) {
+            finalPosition = layoutGrid.x + lightbarrierTrayOne.x + lightbarrierTrayOne.width / 2
+            trayId = 1
+        } else if(color === lightbarrierTrayTwo.trayColor) {
+            finalPosition = layoutGrid.x + lightbarrierTrayTwo.x + lightbarrierTrayTwo.width / 2
+            trayId = 2
+        } else if(color === lightbarrierTrayThree.trayColor) {
+            finalPosition = layoutGrid.x + lightbarrierTrayThree.x + lightbarrierTrayThree.width / 2
+            trayId = 3
+        }
+
+        colorDetected(color, trayId, finalPosition)
+    }
 
 // The Conveyor has to be outside of the grid layout because of gridlayout warning "cell already taken"
 
@@ -384,23 +404,8 @@ Rectangle {
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
 
-            // used to get informed about color detector events
-            readonly property color detectedColor: colorRecongnition.detectedColor
-            // when the color is changed, set the color, the tray id of the same color and the distance to the tray
-            onDetectedColorChanged: {
-                var _finalPosition = destinationXPos
-                var _trayId = 0
-                if(detectedColor === lightbarrierTrayOne.trayColor) {
-                    _finalPosition = layoutGrid.x + lightbarrierTrayOne.x + lightbarrierTrayOne.width / 2 - radius
-                    _trayId = 1
-                } else if(detectedColor === lightbarrierTrayTwo.trayColor) {
-                    _finalPosition = layoutGrid.x + lightbarrierTrayTwo.x + lightbarrierTrayTwo.width / 2 - radius
-                    _trayId = 2
-                } else if(detectedColor === lightbarrierTrayThree.trayColor) {
-                    _finalPosition = layoutGrid.x + lightbarrierTrayThree.x + lightbarrierTrayThree.width / 2 - radius
-                    _trayId = 3
-                }
-                onColorDetected(detectedColor, _trayId, _finalPosition)
+            Component.onCompleted: {
+                simulator.colorDetected.connect(stoneInstance.onColorDetected)
             }
 
             // used to get informed about lightbarrier after detector state changes
