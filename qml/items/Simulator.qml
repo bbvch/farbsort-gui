@@ -425,7 +425,9 @@ Rectangle {
     // when stone is removed from tray one all stones in the tray are removed
     readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
     onTrayOneActivatedChanged: {
-        if(!trayOneActivated) {
+        if(trayOneActivated) {
+            StoneHandler.trayReached(1)
+        } else {
             StoneHandler.removeStonesFromTray(1)
         }
     }
@@ -433,7 +435,9 @@ Rectangle {
     // when stone is removed from tray two all stones in the tray are removed
     readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
     onTrayTwoActivatedChanged: {
-        if(!trayTwoActivated) {
+        if(trayTwoActivated) {
+            StoneHandler.trayReached(2)
+        } else {
             StoneHandler.removeStonesFromTray(2)
         }
     }
@@ -441,7 +445,9 @@ Rectangle {
     // when stone is removed from tray three all stones in the tray are removed
     readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
     onTrayThreeActivatedChanged: {
-        if(!trayThreeActivated) {
+        if(trayThreeActivated) {
+            StoneHandler.trayReached(3)
+        } else {
             StoneHandler.removeStonesFromTray(3)
         }
     }

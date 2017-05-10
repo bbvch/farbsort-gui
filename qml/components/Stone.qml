@@ -64,6 +64,15 @@ Item {
         return false
     }
 
+    function handleTrayReached(trayId)
+    {
+        if(trayId === stoneObject.trayId && "ejecting" == stoneObject.state) {
+            stoneObject.state = "reached"
+            return true
+        }
+        return false
+    }
+
     // checks if a valid ejector id was set
     function needsEjection() {
         return trayId > 0
@@ -101,10 +110,15 @@ Item {
                 to: lightbarrierAfterDetectorXPos
                 easing.type: Easing.Linear
                 duration: conveyorSpeed
-                onRunningChanged: {
-                    if(!running) {
-                        state = "detected"
-                    }
+            }
+        },
+        Transition {
+            from: "detecting";
+            to: "detected";
+            onRunningChanged: {
+                if(!running) {
+                    detectionAnimation.complete()
+                    stoneObject.x = lightbarrierAfterDetectorXPos
                 }
             }
         },
@@ -123,15 +137,10 @@ Item {
                 duration: conveyorSpeed //conveyorAnimationTime()
             }
             onRunningChanged: {
-                if( running === false)
-                {
-                    if(needsEjection())
-                        state = "moved"
-                    else {
-                        state = "reached"
-                        // stone is moved to garbage bin - set timeout to destroy stone
-                        deletionTimer.start()
-                    }
+                // stone is moved to garbage bin - set timeout to destroy stone
+                if(!running && !needsEjection()) {
+                    state = "reached"
+                    deletionTimer.start()
                 }
             }
         },
@@ -139,8 +148,7 @@ Item {
             from: "moving";
             to: "moved";
             onRunningChanged: {
-                if( running === false)
-                {
+                if(!running) {
                     conveyorAnimation.complete()
                     stoneObject.x = conveyorAnimation.to
                 }
@@ -158,10 +166,14 @@ Item {
                 easing.type: Easing.Linear
                 duration: 300
             }
+        },
+        Transition {
+            from: "ejecting";
+            to: "reached";
             onRunningChanged: {
-                if( running === false)
-                {
-                    state = "reached"
+                if(!running) {
+                    ejectorChipAnimation.complete()
+                    stoneObject.y = stoneObject.stopPosY
                 }
             }
         }
