@@ -14,6 +14,8 @@ Rectangle {
     id: diagnosticScreen
     color: "#9aa6ac"
 
+    property alias simulatorComponent: simulator
+
     GridLayout{
         id: diagGrid
         anchors.fill: parent
@@ -24,18 +26,8 @@ Rectangle {
         rowSpacing: Style.bigMargin
         columnSpacing: Style.bigMargin
 
-        Simulator {
+        Loader {
             id: simulator
-            //conveyor.velocity: testControl.conveyorVelocityControl.value
-            conveyor.running:                             websocketClient.motorRunning
-            lightbarrierBeforeColorDetectionState:        websocketClient.lightbarrierOneState
-            lightbarrierAfterColorDetectionState:         websocketClient.lightbarrierTwoState
-            lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
-            lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
-            lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
-            lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
-            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
-            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
 
             Layout.row: 0
             Layout.rowSpan: 4
@@ -47,10 +39,6 @@ Rectangle {
             Layout.preferredHeight: parent.height * 0.75
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
             Layout.margins: 0
-
-            Component.onCompleted: {
-                websocketClient.colorDetected.connect(simulator.onColorDetected)
-            }
         }
 
         StartStopControl {

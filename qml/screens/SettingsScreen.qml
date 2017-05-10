@@ -9,6 +9,8 @@ Rectangle {
     id: settingsScreen
     color: "#9aa6ac"
 
+    property alias simulatorComponent: diagnosticScreen.simulatorComponent
+
     signal settingsExitClicked
 
     SettingsScreenTitle{
