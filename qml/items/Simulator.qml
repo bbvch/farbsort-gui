@@ -412,7 +412,7 @@ Rectangle {
     // this is a workaround to place a new stone on the conveyor.
     onLightbarrierBeforeColorDetectionStateChanged: {
         if(lightbarrierBeforeColorDetectionState && conveyor.running) {
-            StoneHandler.stonePlaced()
+            StoneHandler.stonePlaced(preconfigureStone, simulator)
         }
     }
 

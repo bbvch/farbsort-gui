@@ -1,8 +1,8 @@
 var stones = []
 
-function stonePlaced()
+function stonePlaced(stoneComponent, parent)
 {
-    var stone = preconfigureStone.createObject(simulator);
+    var stone = stoneComponent.createObject(parent);
     stone.startDetection()
     stones.push(stone);
     console.log("added stone to list: # of stone=" + stones.length)
