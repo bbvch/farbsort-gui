@@ -12,7 +12,6 @@
         <file alias="Status.qml">../qml/components/Status.qml</file>
         <file alias="Stone.qml">../qml/components/Stone.qml</file>
         <file alias="ColorRecognitionUnit.qml">../qml/components/ColorRecognitionUnit.qml</file>
-        <file alias="StoneHandler.js">js/StoneHandler.js</file>
     </qresource>
     <qresource prefix="/controls">
         <file alias="EmergencyButton.qml">../qml/controls/EmergencyButton.qml</file>
@@ -28,6 +27,7 @@
     </qresource>
     <qresource prefix="/items">
         <file alias="Simulator.qml">../qml/items/Simulator.qml</file>
+        <file alias="StoneHandler.js">../qml/items/StoneHandler.js</file>
     </qresource>
     <qresource prefix="/screens">
         <file alias="MainScreen.qml">../qml/screens/MainScreen.qml</file>

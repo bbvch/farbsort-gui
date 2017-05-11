@@ -6,7 +6,7 @@ import QtQml 2.0
 import ".."
 import "../components"
 
-import "../components/StoneHandler.js" as StoneHandler
+import "StoneHandler.js" as StoneHandler
 
 Rectangle {
     id: simulator
