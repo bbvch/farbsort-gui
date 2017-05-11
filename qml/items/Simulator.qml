@@ -12,6 +12,7 @@ Rectangle {
     id: simulator
     color: "white"
 
+    property bool connected: false
     property alias conveyor: conveyor
     property alias ejectorOne: ejectorOne
     property alias ejectorTwo: ejectorTwo
@@ -21,6 +22,13 @@ Rectangle {
     property alias lightbarrierTrayOne: lightbarrierTrayOne
     property alias lightbarrierTrayTwo: lightbarrierTrayTwo
     property alias lightbarrierTrayThree: lightbarrierTrayThree
+
+    onConnectedChanged: {
+        // remove all stones when disconnected
+        if(!connected) {
+            StoneHandler.removeAllStones()
+        }
+    }
 
     // decides to which tray the stone needs to be moved
     function onColorDetected(color) {
