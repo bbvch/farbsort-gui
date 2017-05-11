@@ -104,7 +104,7 @@ void WebSocketClientImplementation::sendEmergencyStop()
 
 void WebSocketClientImplementation::reconnectService()
 {
-    qDebug() << "wsc: reconnect to service";
+    qDebug("%s", qPrintable("."));
 
     // Emit logMessage from here, as this this does not conflict with startup
     if(m_wasConnectedBefore && (QAbstractSocket::UnconnectedState == m_webSocket.state()))
@@ -126,13 +126,18 @@ void WebSocketClientImplementation::onConnected()
 
 void WebSocketClientImplementation::onDisconnected()
 {
-    qDebug() << "wsc: WebSocket disconnected";
-    m_connected = false;
-    emit connectedChanged();
-    setMotorRunning(false);
-    setCompressorRunning(false);
-    for(int number = 1; number <= 5; number++) {
-        setLightbarrierState(number, false);
+    if(m_connected) {
+        qDebug() << "wsc: WebSocket disconnected, try to reconnect ";
+        m_connected = false;
+        emit connectedChanged();
+        setMotorRunning(false);
+        setCompressorRunning(false);
+        for(int number = 1; number <= 5; number++) {
+            setLightbarrierState(number, false);
+        }
+        for(int number = 1; number <= 3; number++) {
+            setValveState(number, false);
+        }
     }
     QTimer::singleShot(500, this, SLOT(reconnectService()));
 }
