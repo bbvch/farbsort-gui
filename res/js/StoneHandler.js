@@ -113,3 +113,15 @@ function removeStone(stoneToRemove) {
         console.log("INFO: handled removeStone .... remaining " + stones.length)
     }
 }
+
+// removes all stones from the list
+function removeAllStones()
+{
+    while(stones.length > 0) {
+        var stone = stones[0]
+        stones.splice(0, 1)
+        console.log("INFO: handled removeAllStones .... remaining " + stones.length)
+        stone.destroy()
+    }
+    console.assert(0 == stones.length, "stone list is not empty after removeAllStones!");
+}

@@ -60,6 +60,7 @@ Window {
         id: simulatorComponent
         Simulator {
             id: simulator
+            connected:                                    websocketClient.connected
             //conveyor.velocity: testControl.conveyorVelocityControl.value
             conveyor.running:                             websocketClient.motorRunning
             lightbarrierBeforeColorDetectionState:        websocketClient.lightbarrierOneState
