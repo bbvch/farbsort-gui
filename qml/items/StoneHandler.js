@@ -59,7 +59,7 @@ function startEjecting(trayId)
     while(index < stones.length) {
         var stone = stones[index]
         if(stone) {
-            if(stone.startEjecting(trayId)) {
+            if(stone.handleStartEjecting(trayId)) {
                 handled = true
                 break;
             }
@@ -97,7 +97,7 @@ function removeStonesFromTray(trayId) {
     while(index < stones.length) {
         var stone = stones[index]
         if(stone) {
-            if(stone.reachedTray(trayId)) {
+            if(stone.handleReachedTray(trayId)) {
                 stones.splice(index, 1)
                 console.log("INFO: handled removeStonesFromTray on tray #" + trayId + " .... remaining " + stones.length)
                 stone.destroy()

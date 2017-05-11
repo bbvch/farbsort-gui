@@ -52,7 +52,7 @@ Item {
         return false
     }
 
-    function startEjecting(trayId) {
+    function handleStartEjecting(trayId) {
         if(trayId === stoneObject.trayId &&
            ("moving" == stoneObject.state || "moved" == stoneObject.state)) {
             stoneObject.state = "moved"
@@ -82,7 +82,7 @@ Item {
         conveyorAnimation.duration = conveyorSpeed / (lightbarrierAfterDetectorXPos - startPosX) * (destinationXPos - lightbarrierAfterDetectorXPos)
     }
 
-    function reachedTray(trayId) {
+    function handleReachedTray(trayId) {
         return "reached" === stoneObject.state && trayId === stoneObject.trayId
     }
 
