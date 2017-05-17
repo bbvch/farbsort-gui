@@ -14,8 +14,6 @@ Rectangle {
     id: diagnosticScreen
     color: "#9aa6ac"
 
-    property alias simulatorComponent: simulator
-
     GridLayout{
         id: diagGrid
         anchors.fill: parent
@@ -26,8 +24,22 @@ Rectangle {
         rowSpacing: Style.bigMargin
         columnSpacing: Style.bigMargin
 
-        Loader {
+        Simulator {
             id: simulator
+            //conveyor.velocity: testControl.conveyorVelocityControl.value
+            conveyor.running:                             websocketClient.motorRunning
+            lightbarrierBeforeColorDetectionState:        websocketClient.lightbarrierOneState
+            lightbarrierAfterColorDetectionState:         websocketClient.lightbarrierTwoState
+            lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
+            lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
+            lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
+            lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
+            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
+            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
+
+            Component.onCompleted: {
+                websocketClient.colorDetected.connect(simulator.onColorDetected)
+            }
 
             Layout.row: 0
             Layout.rowSpan: 4

@@ -15,8 +15,6 @@ Rectangle {
     color: "#EEEEEE"
 //    enabled: websocketClient.connected // TODO: This disables all mouse events. Please fix it
 
-    property alias simulatorComponent: simulator
-
     signal settingsScreenRequested
 
     MainTitleBar {
@@ -43,8 +41,22 @@ Rectangle {
         rowSpacing: Style.bigMargin
         columnSpacing: Style.bigMargin
 
-        Loader {
+        Simulator {
             id: simulator
+            //conveyor.velocity: testControl.conveyorVelocityControl.value
+            conveyor.running:                             websocketClient.motorRunning
+            lightbarrierBeforeColorDetectionState:        websocketClient.lightbarrierOneState
+            lightbarrierAfterColorDetectionState:         websocketClient.lightbarrierTwoState
+            lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
+            lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
+            lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
+            lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
+            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
+            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
+
+            Component.onCompleted: {
+                websocketClient.colorDetected.connect(simulator.onColorDetected)
+            }
 
             Layout.row: 0
             Layout.rowSpan: 4

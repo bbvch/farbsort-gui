@@ -56,30 +56,8 @@ Window {
         }
     }
 
-    Component {
-        id: simulatorComponent
-        Simulator {
-            id: simulator
-            //conveyor.velocity: testControl.conveyorVelocityControl.value
-            conveyor.running:                             websocketClient.motorRunning
-            lightbarrierBeforeColorDetectionState:        websocketClient.lightbarrierOneState
-            lightbarrierAfterColorDetectionState:         websocketClient.lightbarrierTwoState
-            lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
-            lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
-            lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
-            lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
-            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
-            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
-
-            Component.onCompleted: {
-                websocketClient.colorDetected.connect(simulator.onColorDetected)
-            }
-        }
-    }
-
     MainScreen {
         id: mainScreen
-        simulatorComponent.sourceComponent: simulatorComponent
 
         onSettingsScreenRequested: {
             mainStackView.push(settingsScreen)
@@ -90,7 +68,6 @@ Window {
     SettingsScreen {
         id: settingsScreen
         visible: false
-        simulatorComponent.sourceComponent: simulatorComponent
 
         onSettingsExitClicked: {
             mainStackView.pop(mainScreen)
