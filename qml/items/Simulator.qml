@@ -24,22 +24,27 @@ Rectangle {
 
     // decides to which tray the stone needs to be moved
     function onColorDetected(color) {
-        var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
-        var trayId = 0
-        if(color === lightbarrierTrayOne.trayColor) {
-            finalPosition = layoutGrid.x + lightbarrierTrayOne.x + lightbarrierTrayOne.width / 2
-            trayId = 1
-        } else if(color === lightbarrierTrayTwo.trayColor) {
-            finalPosition = layoutGrid.x + lightbarrierTrayTwo.x + lightbarrierTrayTwo.width / 2
-            trayId = 2
-        } else if(color === lightbarrierTrayThree.trayColor) {
-            finalPosition = layoutGrid.x + lightbarrierTrayThree.x + lightbarrierTrayThree.width / 2
-            trayId = 3
-        }
+        if(StoneHandler.running) {
+            var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
+            var trayId = 0
+            if(color === lightbarrierTrayOne.trayColor) {
+                finalPosition = layoutGrid.x + lightbarrierTrayOne.x + lightbarrierTrayOne.width / 2
+                trayId = 1
+            } else if(color === lightbarrierTrayTwo.trayColor) {
+                finalPosition = layoutGrid.x + lightbarrierTrayTwo.x + lightbarrierTrayTwo.width / 2
+                trayId = 2
+            } else if(color === lightbarrierTrayThree.trayColor) {
+                finalPosition = layoutGrid.x + lightbarrierTrayThree.x + lightbarrierTrayThree.width / 2
+                trayId = 3
+            }
 
-        StoneHandler.colorDetected(color, trayId, finalPosition)
+            StoneHandler.colorDetected(color, trayId, finalPosition)
+        }
     }
 
+    Component.onDestruction: {
+        StoneHandler.shutdown()
+    }
 
 
 // The Conveyor has to be outside of the grid layout because of gridlayout warning "cell already taken"

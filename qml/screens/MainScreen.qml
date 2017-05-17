@@ -58,6 +58,10 @@ Rectangle {
                 websocketClient.colorDetected.connect(simulator.onColorDetected)
             }
 
+            Component.onDestruction: {
+                websocketClient.colorDetected.disconnect(simulator.onColorDetected)
+            }
+
             Layout.row: 0
             Layout.rowSpan: 4
             Layout.column: 0

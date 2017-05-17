@@ -49,9 +49,7 @@ int main(int argc, char *argv[])
     QObject::connect(webSocketClient.data(), SIGNAL(lightbarrierFourStateChanged(bool)), &countingLogic, SLOT(trayTwoLightbarrierActivationChanged(bool)));
     QObject::connect(webSocketClient.data(), SIGNAL(lightbarrierFiveStateChanged(bool)), &countingLogic, SLOT(trayThreeLightbarrierActivationChanged(bool)));
 
-    QThread eventLogThread;
     EventLog eventLog;
-    eventLog.moveToThread(&eventLogThread);
     QObject::connect(webSocketClient.data(), SIGNAL(logMessageToBeDisplayed(QString,LogEntry::LogLevel,QString,QColor)), &eventLog, SLOT(addLogEntry(QString,LogEntry::LogLevel,QString,QColor)));
 
     // start application

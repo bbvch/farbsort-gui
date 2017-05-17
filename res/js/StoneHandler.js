@@ -1,16 +1,20 @@
 var stones = []
+var running = true
 
 function stonePlaced(stoneComponent, parent)
 {
-    var stone = stoneComponent.createObject(parent);
-    stone.startDetection()
-    stones.push(stone);
-    console.log("added stone to list: # of stone=" + stones.length)
+    if(running) {
+        var stone = stoneComponent.createObject(parent);
+        stone.startDetection()
+        stones.push(stone);
+        console.log("added stone to list: # of stone=" + stones.length)
+    }
 }
 
 // handle colorDetected event
 function colorDetected(color, trayId, position)
 {
+
     var handled = false
     var index = 0
     while(index < stones.length) {
@@ -111,5 +115,15 @@ function removeStone(stoneToRemove) {
         stones.splice(index, 1)
         stoneToRemove.destroy()
         console.log("INFO: handled removeStone .... remaining " + stones.length)
+    }
+}
+
+function shutdown() {
+    if(running) {
+        running = false
+        // remove all stones
+        for(var index = 0; index < stones.length; index++) {
+            stones[index].destroy();
+        }
     }
 }

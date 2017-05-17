@@ -15,63 +15,44 @@ Window {
     height: 768
     visible: true
 
+    // true, if mainScreen is shown, otherwise false
+    property bool showMainScreen: true
+
 //    visibility: Window.FullScreen
 
-    StackView {
-        id: mainStackView
-        initialItem: mainScreen
+    onShowMainScreenChanged: {
+        websocketClient.sendProductionModeRequest(showMainScreen)
+    }
+
+
+    Component {
+        id: mainScreenComponent
+        MainScreen {
+            id: mainScreen
+            anchors.fill: parent
+
+            onSettingsScreenRequested: {
+                showMainScreen = false
+            }
+        }
+    }
+
+    Component {
+        id: settingsScreenComponent
+        SettingsScreen {
+            id: settingsScreen
+            anchors.fill: parent
+
+            onSettingsExitClicked: {
+                showMainScreen = true
+            }
+        }
+    }
+
+    Loader {
+        id: view
+        sourceComponent: showMainScreen ? mainScreenComponent : settingsScreenComponent
+        asynchronous: false
         anchors.fill: parent
-
-        pushEnter: Transition {
-            PropertyAnimation {
-                property: "opacity"
-                from: 0
-                to:1
-                duration: 300
-            }
-        }
-        pushExit: Transition {
-            PropertyAnimation {
-                property: "opacity"
-                from: 1
-                to:0
-                duration: 300
-            }
-        }
-        popEnter: Transition {
-            PropertyAnimation {
-                property: "opacity"
-                from: 0
-                to:1
-                duration: 300
-            }
-        }
-        popExit: Transition {
-            PropertyAnimation {
-                property: "opacity"
-                from: 1
-                to:0
-                duration: 300
-            }
-        }
-    }
-
-    MainScreen {
-        id: mainScreen
-
-        onSettingsScreenRequested: {
-            mainStackView.push(settingsScreen)
-            websocketClient.sendProductionModeRequest(false)
-        }
-    }
-
-    SettingsScreen {
-        id: settingsScreen
-        visible: false
-
-        onSettingsExitClicked: {
-            mainStackView.pop(mainScreen)
-            websocketClient.sendProductionModeRequest(true)
-        }
     }
 }

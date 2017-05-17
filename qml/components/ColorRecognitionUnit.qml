@@ -74,4 +74,8 @@ Rectangle {
     Component.onCompleted: {
         websocketClient.colorDetected.connect(onColorDetected)
     }
+
+    Component.onDestruction: {
+        websocketClient.colorDetected.disconnect(onColorDetected)
+    }
 }
