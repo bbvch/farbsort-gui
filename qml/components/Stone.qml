@@ -11,10 +11,11 @@ Item {
     property int lightbarrierAfterDetectorXPos: 300
     property int trayId: 0
     property int destinationXPos: 300
-    // reference to the stoneHandler - needed to remove the stone
-    property var _stoneHandler: null
     // flag to store if the color was already assigned
     property bool _colorAssigned: false
+
+    // signalizes that the stone is ready for destruction
+    signal destructionRequested(var stone)
 
     function startDetection() {
         stoneObject.x = stoneObject.startPosX
@@ -182,7 +183,9 @@ Item {
     Timer {
         id: deletionTimer
         interval: 10000; running: false; repeat: false
-        onTriggered: { _stoneHandler.removeStone(stoneObject); }
+        onTriggered: {
+            destructionRequested(stoneObject);
+        }
     }
 
     Rectangle {
@@ -196,7 +199,7 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                _stoneHandler.removeStone(stoneObject);
+                destructionRequested(stoneObject);
             }
         }
     }

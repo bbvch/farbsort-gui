@@ -7,6 +7,7 @@ function stonePlaced(stoneComponent, parent)
         var stone = stoneComponent.createObject(parent);
         stone.startDetection()
         stones.push(stone);
+        stone.destructionRequested.connect(removeStone)
         console.log("added stone to list: # of stone=" + stones.length)
     }
 }

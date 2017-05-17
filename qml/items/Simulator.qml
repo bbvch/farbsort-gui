@@ -417,7 +417,6 @@ Rectangle {
             conveyorSpeed:      1500
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
-            _stoneHandler: StoneHandler
         }
     }
 
