@@ -18,7 +18,14 @@ TestCase {
         var stone = get_stone()
         compare(stone.trayId, 0, "tray is initialized to zero")
         compare(stone.color, "#00000000", "initial color is transparent")
-        compare(stone.state, "created", "initial state is created")
+        compare(stone.state, "CREATED", "initial state is created")
+    }
+
+    function test_stone_in_detecting_state_after_it_was_placed_on_conveyor()
+    {
+        var stone = get_stone()
+        stone.handleDetectionStarted()
+        compare(stone.state, "DETECTING", "state changed to detecting")
     }
 }
 

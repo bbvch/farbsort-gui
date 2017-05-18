@@ -15,7 +15,7 @@ Item {
 
     onValveStateChanged: {
         if(valveState) {
-            ejectorPin.state = "ejecting";
+            ejectorPin.state = "EJECTING";
         } else {
             ejectorPin.state = "pulling";
         }
@@ -41,7 +41,7 @@ Item {
 
         states:
             State {
-                name: "ejecting"
+                name: "EJECTING"
                 PropertyChanges { target: ejectorPin; y: ejector.y+Style.medMargin + ejectDistance }
             }
             State {
@@ -55,11 +55,11 @@ Item {
         transitions: [
             Transition {
                 from: "idle";
-                to: "ejecting";
+                to: "EJECTING";
                 animations: PropertyAnimation { property: "y"; easing.type: Easing.InOutQuad; duration: 150; }
             },
             Transition {
-                from: "ejecting";
+                from: "EJECTING";
                 to: "pulling";
                 animations: PropertyAnimation { property: "y"; easing.type: Easing.InOutQuad; duration: 600; }
                 onRunningChanged: {

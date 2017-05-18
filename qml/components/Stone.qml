@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Item {
     id: stoneObject
-    state: "created"
+    state: "CREATED"
     property alias color: circle.color
     property int startPosX: 16
     property int startPosY: parent.height/2 - stoneObject.height/2
@@ -17,18 +17,19 @@ Item {
     // signalizes that the stone is ready for destruction
     signal destructionRequested(var stone)
 
-    function startDetection() {
+    // starts the detection of the color
+    function handleDetectionStarted() {
         stoneObject.x = stoneObject.startPosX
         stoneObject.y = stoneObject.startPosY
         stoneObject.color = "transparent"
-        state = "detecting"
+        state = "DETECTING"
     }
 
     // tries to assign the detected color to the stone
     // return: true, if the operation was successful, otherwise false
     function handleColorDetected(color, trayId, destinationXPos) {
         // stone must be under the color detector and no color was assigned before
-        if("detecting" === state && !stoneObject._colorAssigned) {
+        if("DETECTING" === state && !stoneObject._colorAssigned) {
             stoneObject.color = color
             stoneObject.trayId = trayId
             stoneObject.destinationXPos = destinationXPos - radius
@@ -42,10 +43,10 @@ Item {
     // tries to move the stone to the end of the detector
     // return: true, if the operation was successful, otherwise false
     function handleDetectorEndReached() {
-        if("detecting" === state) {
-            stoneObject.state = "detected"
+        if("DETECTING" === state) {
+            stoneObject.state = "DETECTED"
             updateConveyorAnimationTime()
-            stoneObject.state = "moving"
+            stoneObject.state = "MOVING"
 
             console.log("Stone: handled detectorEndReached event")
             return true;
@@ -55,10 +56,10 @@ Item {
 
     function handleStartEjecting(trayId) {
         if(trayId === stoneObject.trayId &&
-           ("moving" == stoneObject.state || "moved" == stoneObject.state)) {
-            stoneObject.state = "moved"
+           ("MOVING" == stoneObject.state || "MOVED" == stoneObject.state)) {
+            stoneObject.state = "MOVED"
             if(needsEjection()) {
-                state = "ejecting"
+                state = "EJECTING"
             }
             return true
         }
@@ -67,8 +68,8 @@ Item {
 
     function handleTrayReached(trayId)
     {
-        if(trayId === stoneObject.trayId && "ejecting" == stoneObject.state) {
-            stoneObject.state = "reached"
+        if(trayId === stoneObject.trayId && "EJECTING" == stoneObject.state) {
+            stoneObject.state = "REACHED"
             return true
         }
         return false
@@ -84,23 +85,23 @@ Item {
     }
 
     function handleReachedTray(trayId) {
-        return "reached" === stoneObject.state && trayId === stoneObject.trayId
+        return "REACHED" === stoneObject.state && trayId === stoneObject.trayId
     }
 
     states: [
-        State { name: "created" },
-        State { name: "detecting" },
-        State { name: "detected" },
-        State { name: "moving" },
-        State { name: "moved" },
-        State { name: "ejecting" },
-        State { name: "reached" }
+        State { name: "CREATED" },
+        State { name: "DETECTING" },
+        State { name: "DETECTED" },
+        State { name: "MOVING" },
+        State { name: "MOVED" },
+        State { name: "EJECTING" },
+        State { name: "REACHED" }
     ]
 
     transitions: [
         Transition {
-            from: "created";
-            to: "detecting";
+            from: "CREATED";
+            to: "DETECTING";
             animations:     PropertyAnimation {
                 id: detectionAnimation
                 loops: 1
@@ -114,8 +115,8 @@ Item {
             }
         },
         Transition {
-            from: "detecting";
-            to: "detected";
+            from: "DETECTING";
+            to: "DETECTED";
             onRunningChanged: {
                 if(!running) {
                     detectionAnimation.complete()
@@ -124,8 +125,8 @@ Item {
             }
         },
         Transition {
-            from: "detected";
-            to: "moving";
+            from: "DETECTED";
+            to: "MOVING";
             animations: NumberAnimation {
                 id: conveyorAnimation
                 loops: 1
@@ -140,14 +141,14 @@ Item {
             onRunningChanged: {
                 // stone is moved to garbage bin - set timeout to destroy stone
                 if(!running && !needsEjection()) {
-                    state = "reached"
+                    state = "REACHED"
                     deletionTimer.start()
                 }
             }
         },
         Transition {
-            from: "moving";
-            to: "moved";
+            from: "MOVING";
+            to: "MOVED";
             onRunningChanged: {
                 if(!running) {
                     conveyorAnimation.complete()
@@ -156,8 +157,8 @@ Item {
             }
         },
         Transition {
-            from: "moved";
-            to: "ejecting";
+            from: "MOVED";
+            to: "EJECTING";
             animations: NumberAnimation {
                 id: ejectorChipAnimation
                 target: stoneObject
@@ -169,8 +170,8 @@ Item {
             }
         },
         Transition {
-            from: "ejecting";
-            to: "reached";
+            from: "EJECTING";
+            to: "REACHED";
             onRunningChanged: {
                 if(!running) {
                     ejectorChipAnimation.complete()
