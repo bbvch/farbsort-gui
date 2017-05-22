@@ -38,8 +38,8 @@ TestCase {
         var trayId = 1
         var red = "#ff0000"
         var destinationXPos = 111
+        stone.state = "DETECTING"
 
-        stone.handleDetectionStarted()
         verify(stone.handleColorDetected(red, trayId, destinationXPos), "handleColorDetected signal is handled")
         compare(stone.state, "DETECTING", "state is still DETECTING")
         compare(stone.color, red, "color changed to red")
@@ -49,8 +49,11 @@ TestCase {
 
     function test_stone_is_move_to_tray_one_when_color_blue_is_detected()
     {
-        stone.handleDetectionStarted()
-        stone.handleColorDetected("#0000ff", 1, 222)
+        stone.state = "DETECTING"
+        stone.color = "#0000ff"
+        stone.trayId = 1
+        stone.destinationXPos = 222
+
         verify(stone.handleDetectorEndReached(), "handled detectorEndReached event")
         compare(stone.state, "MOVING", "state changed to MOVING")
     }
@@ -58,10 +61,9 @@ TestCase {
     function test_stone_is_ejected_after_ejecting_event_is_handled()
     {
         var trayId = 1
+        stone.state = "MOVING"
+        stone.trayId = trayId
 
-        stone.handleDetectionStarted()
-        stone.handleColorDetected("#0000ff", trayId, 111)
-        stone.handleDetectorEndReached()
         verify(stone.handleStartEjecting(trayId), "startEjecting event handled for tray " + trayId)
         compare(stone.state, "EJECTING", "state change to EJECTING")
     }
@@ -69,11 +71,9 @@ TestCase {
     function test_stone_has_reached_bin_after_reached_event_is_handled()
     {
         var trayId = 1
+        stone.state = "EJECTING"
+        stone.trayId = trayId
 
-        stone.handleDetectionStarted()
-        stone.handleColorDetected("#0000ff", trayId, 111)
-        stone.handleDetectorEndReached()
-        stone.handleStartEjecting(trayId)
         verify(stone.handleTrayReached(trayId), "trayReached event handled for tray " + trayId)
         compare(stone.state, "REACHED", "state change to REACHED")
     }
