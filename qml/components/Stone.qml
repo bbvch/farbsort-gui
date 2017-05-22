@@ -9,9 +9,9 @@ Item {
     width: radius * 2
     property int startPosX: 0
     property int startPosY: 0
-    property int stopPosY: startPosY + 200
+    property int stopPosY: startPosY + 5
     property int conveyorSpeed: 800
-    property int lightbarrierAfterDetectorXPos: startPosX + 200
+    property int lightbarrierAfterDetectorXPos: startPosX + 5
     property int trayId: 0
     property int destinationXPos: lightbarrierAfterDetectorXPos * 2
     // flag to store if the color was already assigned

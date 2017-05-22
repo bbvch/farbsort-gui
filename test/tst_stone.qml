@@ -54,5 +54,28 @@ TestCase {
         verify(stone.handleDetectorEndReached(), "handled detectorEndReached event")
         compare(stone.state, "MOVING", "state changed to MOVING")
     }
+
+    function test_stone_is_ejected_after_ejecting_event_is_handled()
+    {
+        var trayId = 1
+
+        stone.handleDetectionStarted()
+        stone.handleColorDetected("#0000ff", trayId, 111)
+        stone.handleDetectorEndReached()
+        verify(stone.handleStartEjecting(trayId), "startEjecting event handled for tray " + trayId)
+        compare(stone.state, "EJECTING", "state change to EJECTING")
+    }
+
+    function test_stone_has_reached_bin_after_reached_event_is_handled()
+    {
+        var trayId = 1
+
+        stone.handleDetectionStarted()
+        stone.handleColorDetected("#0000ff", trayId, 111)
+        stone.handleDetectorEndReached()
+        stone.handleStartEjecting(trayId)
+        verify(stone.handleTrayReached(trayId), "trayReached event handled for tray " + trayId)
+        compare(stone.state, "REACHED", "state change to REACHED")
+    }
 }
 
