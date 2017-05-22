@@ -7,25 +7,30 @@ TestCase {
     id: stoneTest
     name: "StoneTest"
 
-    function get_stone()
+    property Stone stone: null
+
+    function init()
     {
         var component = Qt.createComponent("qrc:/components/Stone.qml")
-        return component.createObject(stoneTest)
+        stone =  component.createObject(stoneTest)
+    }
+
+    function cleanup()
+    {
+        stone.destroy()
     }
 
     function test_stone_is_correclty_initialized_after_creation()
     {
-        var stone = get_stone()
         compare(stone.trayId, 0, "tray is initialized to zero")
         compare(stone.color, "#00000000", "initial color is transparent")
-        compare(stone.state, "CREATED", "initial state is created")
+        compare(stone.state, "CREATED", "initial state is CREATED")
     }
 
     function test_stone_in_detecting_state_after_it_was_placed_on_conveyor()
     {
-        var stone = get_stone()
         stone.handleDetectionStarted()
-        compare(stone.state, "DETECTING", "state changed to detecting")
+        compare(stone.state, "DETECTING", "state changed to DETECTING")
     }
 }
 

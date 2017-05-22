@@ -81,6 +81,7 @@ function trayReached(trayId)
         var stone = stones[index]
         if(stone) {
             if(stone.handleTrayReached(trayId)) {
+                console.log("----------------------- stone in tray#" + trayId + " reached in " + stone.neededTime() + "ms")
                 handled = true
                 break;
             }

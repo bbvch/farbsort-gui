@@ -13,12 +13,17 @@ Item {
     property int destinationXPos: 300
     // flag to store if the color was already assigned
     property bool _colorAssigned: false
+    property date _placedTime: new Date()
+    property date _detectedTime:  new Date()
+    property date _ejectedTime: new Date()
+    property date _reachedTime: new Date()
 
     // signalizes that the stone is ready for destruction
     signal destructionRequested(var stone)
 
     // starts the detection of the color
     function handleDetectionStarted() {
+        stoneObject._placedTime = new Date()
         stoneObject.x = stoneObject.startPosX
         stoneObject.y = stoneObject.startPosY
         stoneObject.color = "transparent"
@@ -44,10 +49,10 @@ Item {
     // return: true, if the operation was successful, otherwise false
     function handleDetectorEndReached() {
         if("DETECTING" === state) {
+            stoneObject._detectedTime = new Date()
             stoneObject.state = "DETECTED"
             updateConveyorAnimationTime()
             stoneObject.state = "MOVING"
-
             console.log("Stone: handled detectorEndReached event")
             return true;
         }
@@ -59,6 +64,7 @@ Item {
            ("MOVING" == stoneObject.state || "MOVED" == stoneObject.state)) {
             stoneObject.state = "MOVED"
             if(needsEjection()) {
+                stoneObject._ejectedTime = new Date()
                 state = "EJECTING"
             }
             return true
@@ -69,10 +75,19 @@ Item {
     function handleTrayReached(trayId)
     {
         if(trayId === stoneObject.trayId && "EJECTING" == stoneObject.state) {
+            stoneObject._reachedTime = new Date()
             stoneObject.state = "REACHED"
             return true
         }
         return false
+    }
+
+    function neededTime() {
+        var timeToDetectorEnd = stoneObject._detectedTime - stoneObject._placedTime
+        var timeToEjector = stoneObject._ejectedTime - stoneObject._detectedTime
+        var timeToEndPosition = stoneObject._reachedTime - stoneObject._ejectedTime
+        console.log("timing for stone in tray #" + stoneObject.trayId + ": " + timeToDetectorEnd + ", " + timeToEjector + ", " + timeToEndPosition)
+        return stoneObject._reachedTime - stoneObject._placedTime
     }
 
     // checks if a valid ejector id was set
