@@ -51,7 +51,7 @@ TestCase {
         stone.state = "DETECTING"
 
         verify(stone.handleColorDetected(red, trayId, destinationXPos), "handleColorDetected signal is handled")
-        compare(stone.state, "DETECTING", "state is still DETECTING")
+        compare(stone.state, "DETECTED", "state is still DETECTED")
         compare(stone.color, red, "color changed to red")
         compare(stone.trayId, trayId, "tray id is set to " + trayId)
         compare(stone.destinationXPos, destinationXPos, "stone is moved to destinationXPos " + destinationXPos)
@@ -59,7 +59,7 @@ TestCase {
 
     function test_stone_is_moved_to_tray_one_when_color_blue_is_detected()
     {
-        stone.state = "DETECTING"
+        stone.state = "DETECTED"
         stone.color = "#0000ff"
         stone.trayId = 1
         stone.destinationXPos = 222

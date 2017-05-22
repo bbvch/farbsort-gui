@@ -15,7 +15,6 @@ Item {
     property int trayId: 0
     property int destinationXPos: lightbarrierAfterDetectorXPos * 2
     // flag to store if the color was already assigned
-    property bool _colorAssigned: false
     property date _placedTime: new Date()
     property date _detectedTime:  new Date()
     property date _ejectedTime: new Date()
@@ -37,11 +36,11 @@ Item {
     // return: true, if the operation was successful, otherwise false
     function handleColorDetected(color, trayId, destinationXPos) {
         // stone must be under the color detector and no color was assigned before
-        if("DETECTING" === state && !stoneObject._colorAssigned) {
+        if("DETECTING" === state) {
             stoneObject.color = color
             stoneObject.trayId = trayId
             stoneObject.destinationXPos = destinationXPos
-            stoneObject._colorAssigned = true
+            stoneObject.state = "DETECTED"
             console.log("Stone: handled colorDetected event for color " + color)
             return true
         }
@@ -51,9 +50,8 @@ Item {
     // tries to move the stone to the end of the detector
     // return: true, if the operation was successful, otherwise false
     function handleDetectorEndReached() {
-        if("DETECTING" === state) {
+        if("DETECTED" === state) {
             stoneObject._detectedTime = new Date()
-            stoneObject.state = "DETECTED"
             updateConveyorAnimationTime()
             stoneObject.state = "MOVING"
             console.log("Stone: handled detectorEndReached event")
@@ -108,6 +106,43 @@ Item {
         return "REACHED" === stoneObject.state && trayId === stoneObject.trayId
     }
 
+    NumberAnimation {
+        id: detectionAnimation
+        loops: 1
+        alwaysRunToEnd: true
+        target: stoneObject
+        property: "x"
+        from: startPosX - stoneObject.radius
+        to: lightbarrierAfterDetectorXPos - stoneObject.radius
+        easing.type: Easing.Linear
+        duration: conveyorSpeed
+        running: false
+    }
+
+    NumberAnimation {
+        id: conveyorAnimation
+        loops: 1
+        alwaysRunToEnd: true
+        target: stoneObject
+        property: "x"
+        from: lightbarrierAfterDetectorXPos - stoneObject.radius
+        to: destinationXPos - stoneObject.radius
+        easing.type: Easing.Linear
+        duration: conveyorSpeed
+        running: false
+    }
+
+    NumberAnimation {
+        id: ejectorChipAnimation
+        target: stoneObject
+        property: "y"
+        from: stoneObject.startPosY - stoneObject.radius
+        to: stoneObject.stopPosY - stoneObject.radius
+        easing.type: Easing.Linear
+        duration: 300
+        running: false
+    }
+
     states: [
         State { name: "CREATED" },
         State { name: "DETECTING" },
@@ -122,47 +157,25 @@ Item {
         Transition {
             from: "CREATED";
             to: "DETECTING";
-            animations:     PropertyAnimation {
-                id: detectionAnimation
-                loops: 1
-                alwaysRunToEnd: true
-                target: stoneObject
-                property: "x"
-                from: startPosX - stoneObject.radius
-                to: lightbarrierAfterDetectorXPos - stoneObject.radius
-                easing.type: Easing.Linear
-                duration: conveyorSpeed
-            }
-        },
-        Transition {
-            from: "DETECTING";
-            to: "DETECTED";
             onRunningChanged: {
                 if(!running) {
-                    detectionAnimation.complete()
-                    stoneObject.x = lightbarrierAfterDetectorXPos - stoneObject.radius
+                    detectionAnimation.start()
                 }
             }
         },
         Transition {
-            from: "DETECTED";
+            from: "DETECTED"
             to: "MOVING";
-            animations: NumberAnimation {
-                id: conveyorAnimation
-                loops: 1
-                alwaysRunToEnd: true
-                target: stoneObject
-                property: "x"
-                from: lightbarrierAfterDetectorXPos - stoneObject.radius
-                to: destinationXPos - stoneObject.radius
-                easing.type: Easing.Linear
-                duration: conveyorSpeed
-            }
             onRunningChanged: {
                 // stone is moved to garbage bin - set timeout to destroy stone
-                if(!running && !needsEjection()) {
-                    state = "REACHED"
-                    deletionTimer.start()
+                if(!running) {
+                    detectionAnimation.complete()
+                    conveyorAnimation.start()
+                    // TODO: move to animation end
+                    if(!needsEjection()) {
+                        state = "REACHED"
+                        deletionTimer.start()
+                    }
                 }
             }
         },
@@ -172,21 +185,16 @@ Item {
             onRunningChanged: {
                 if(!running) {
                     conveyorAnimation.complete()
-                    stoneObject.x = conveyorAnimation.to
                 }
             }
         },
         Transition {
             from: "MOVED";
             to: "EJECTING";
-            animations: NumberAnimation {
-                id: ejectorChipAnimation
-                target: stoneObject
-                property: "y"
-                from: stoneObject.startPosY - stoneObject.radius
-                to: stoneObject.stopPosY - stoneObject.radius
-                easing.type: Easing.Linear
-                duration: 300
+            onRunningChanged: {
+                if(!running) {
+                    ejectorChipAnimation.start()
+                }
             }
         },
         Transition {
@@ -195,7 +203,6 @@ Item {
             onRunningChanged: {
                 if(!running) {
                     ejectorChipAnimation.complete()
-                    stoneObject.y = stoneObject.stopPosY - stoneObject.radius
                 }
             }
         }
