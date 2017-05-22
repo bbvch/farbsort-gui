@@ -7,13 +7,13 @@ Item {
     property int radius: 20
     height: radius * 2
     width: radius * 2
-    property int startPosX: 16
-    property int startPosY: parent.height / 2
-    property int stopPosY: startPosY + 100
+    property int startPosX: 0
+    property int startPosY: 0
+    property int stopPosY: startPosY + 200
     property int conveyorSpeed: 800
-    property int lightbarrierAfterDetectorXPos: 300
+    property int lightbarrierAfterDetectorXPos: startPosX + 200
     property int trayId: 0
-    property int destinationXPos: 300
+    property int destinationXPos: lightbarrierAfterDetectorXPos * 2
     // flag to store if the color was already assigned
     property bool _colorAssigned: false
     property date _placedTime: new Date()
@@ -99,7 +99,9 @@ Item {
     }
 
     function updateConveyorAnimationTime() {
-        conveyorAnimation.duration = conveyorSpeed / (lightbarrierAfterDetectorXPos - startPosX) * (destinationXPos - lightbarrierAfterDetectorXPos)
+        var animationTime = stoneObject.conveyorSpeed / (stoneObject.lightbarrierAfterDetectorXPos - stoneObject.startPosX) * (stoneObject.destinationXPos - stoneObject.lightbarrierAfterDetectorXPos)
+        //console.info("animationTime from afterDetector to endPosition is " + animationTime)
+        conveyorAnimation.duration = animationTime
     }
 
     function handleReachedTray(trayId) {
@@ -154,7 +156,7 @@ Item {
                 from: lightbarrierAfterDetectorXPos - stoneObject.radius
                 to: destinationXPos - stoneObject.radius
                 easing.type: Easing.Linear
-                duration: conveyorSpeed //conveyorAnimationTime()
+                duration: conveyorSpeed
             }
             onRunningChanged: {
                 // stone is moved to garbage bin - set timeout to destroy stone

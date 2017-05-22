@@ -36,13 +36,27 @@ TestCase {
     function test_stone_changes_color_after_color_detected_event_was_handled()
     {
         var trayId = 1
-        var color = "#ff0000" //red
+        var red = "#ff0000"
+        var destinationXPos = 111
 
         stone.trayId = trayId
         stone.handleDetectionStarted()
-        verify(stone.handleColorDetected(color, trayId, 111), "handleColorDetected signal is handled")
+        verify(stone.handleColorDetected(red, trayId, destinationXPos), "handleColorDetected signal is handled")
         compare(stone.state, "DETECTING", "state is still DETECTING")
-        compare(stone.color, color, "color changed to red")
+        compare(stone.color, red, "color changed to red")
+        compare(stone.destinationXPos, destinationXPos, "stone is moved to destinationXPos " + destinationXPos)
+    }
+
+    function test_stone_is_move_to_tray_one_when_color_blue_is_detected()
+    {
+        var trayId = 1
+        var blue = "#0000ff"
+        var destinationXPos = 222
+
+        stone.handleDetectionStarted()
+        stone.handleColorDetected(blue, trayId, destinationXPos)
+        verify(stone.handleDetectorEndReached(), "handled detectorEndReached event")
+        compare(stone.state, "MOVING", "state changed to MOVING")
     }
 }
 
