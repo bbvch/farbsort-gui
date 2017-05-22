@@ -65,7 +65,7 @@ Rectangle {
             width: Style.controlFontSize
             height:Style.controlFontSize
             radius: height/2
-            color: "white"
+            color: countingLogic.trayOneStoneCounter.color
             border.color: "gray"
             border.width: 2
 
@@ -82,7 +82,7 @@ Rectangle {
             width: Style.controlFontSize
             height:Style.controlFontSize
             radius: height/2
-            color: "red"
+            color: countingLogic.trayTwoStoneCounter.color
             border.color: "gray"
             border.width: 2
 
@@ -99,7 +99,7 @@ Rectangle {
             width: Style.controlFontSize
             height:Style.controlFontSize
             radius: height/2
-            color: "#1E90FF"
+            color: countingLogic.trayThreeStoneCounter.color
             border.color: "gray"
             border.width: 2
 
@@ -113,7 +113,7 @@ Rectangle {
 
         Text{
             id: whiteText
-            text: qsTr("weiss")
+            text: qsTr(countingLogic.trayOneStoneCounter.name)
             color: Style.textColor
 
             Layout.row: 0
@@ -128,7 +128,7 @@ Rectangle {
 
         Text{
             id: redText
-            text: qsTr("red")
+            text: qsTr(countingLogic.trayTwoStoneCounter.name)
             color: Style.textColor
 
             Layout.row: 2
@@ -143,7 +143,7 @@ Rectangle {
 
         Text{
             id: blueText
-            text: qsTr("blue")
+            text: qsTr(countingLogic.trayThreeStoneCounter.name)
             color: Style.textColor
 
             Layout.row: 4
