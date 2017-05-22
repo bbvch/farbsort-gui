@@ -4,8 +4,11 @@ Item {
     id: stoneObject
     state: "CREATED"
     property alias color: circle.color
+    property int radius: 20
+    height: radius * 2
+    width: radius * 2
     property int startPosX: 16
-    property int startPosY: parent.height/2 - stoneObject.height/2
+    property int startPosY: parent.height / 2
     property int stopPosY: startPosY + 100
     property int conveyorSpeed: 800
     property int lightbarrierAfterDetectorXPos: 300
@@ -24,8 +27,8 @@ Item {
     // starts the detection of the color
     function handleDetectionStarted() {
         stoneObject._placedTime = new Date()
-        stoneObject.x = stoneObject.startPosX
-        stoneObject.y = stoneObject.startPosY
+        stoneObject.x = stoneObject.startPosX - stoneObject.radius
+        stoneObject.y = stoneObject.startPosY - stoneObject.radius
         stoneObject.color = "transparent"
         state = "DETECTING"
     }
@@ -37,7 +40,7 @@ Item {
         if("DETECTING" === state && !stoneObject._colorAssigned) {
             stoneObject.color = color
             stoneObject.trayId = trayId
-            stoneObject.destinationXPos = destinationXPos - radius
+            stoneObject.destinationXPos = destinationXPos
             stoneObject._colorAssigned = true
             console.log("Stone: handled colorDetected event for color " + color)
             return true
@@ -123,8 +126,8 @@ Item {
                 alwaysRunToEnd: true
                 target: stoneObject
                 property: "x"
-                from: startPosX
-                to: lightbarrierAfterDetectorXPos
+                from: startPosX - stoneObject.radius
+                to: lightbarrierAfterDetectorXPos - stoneObject.radius
                 easing.type: Easing.Linear
                 duration: conveyorSpeed
             }
@@ -135,7 +138,7 @@ Item {
             onRunningChanged: {
                 if(!running) {
                     detectionAnimation.complete()
-                    stoneObject.x = lightbarrierAfterDetectorXPos
+                    stoneObject.x = lightbarrierAfterDetectorXPos - stoneObject.radius
                 }
             }
         },
@@ -148,8 +151,8 @@ Item {
                 alwaysRunToEnd: true
                 target: stoneObject
                 property: "x"
-                from: lightbarrierAfterDetectorXPos
-                to: destinationXPos
+                from: lightbarrierAfterDetectorXPos - stoneObject.radius
+                to: destinationXPos - stoneObject.radius
                 easing.type: Easing.Linear
                 duration: conveyorSpeed //conveyorAnimationTime()
             }
@@ -178,8 +181,8 @@ Item {
                 id: ejectorChipAnimation
                 target: stoneObject
                 property: "y"
-                from: stoneObject.startPosY
-                to: stoneObject.stopPosY
+                from: stoneObject.startPosY - stoneObject.radius
+                to: stoneObject.stopPosY - stoneObject.radius
                 easing.type: Easing.Linear
                 duration: 300
             }
@@ -190,7 +193,7 @@ Item {
             onRunningChanged: {
                 if(!running) {
                     ejectorChipAnimation.complete()
-                    stoneObject.y = stoneObject.stopPosY
+                    stoneObject.y = stoneObject.stopPosY - stoneObject.radius
                 }
             }
         }

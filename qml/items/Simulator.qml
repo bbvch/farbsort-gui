@@ -407,16 +407,13 @@ Rectangle {
 
         Stone {
             id: stoneInstance
-            readonly property int diameter: conveyor.height*2 / 3
-            readonly property int radius:   diameter  / 2
-            height:             diameter
-            width:              diameter
-            startPosX:          layoutGrid.x + bevorColorRecognition.x + bevorColorRecognition.width / 2 - radius
-            startPosY:          conveyor.y + conveyor.height / 2 - radius
-            stopPosY:           layoutGrid.y + lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle - radius
+            radius: conveyor.height / 3
+            startPosX:          layoutGrid.x + bevorColorRecognition.x + bevorColorRecognition.width / 2
+            startPosY:          conveyor.y + conveyor.height / 2
+            stopPosY:           layoutGrid.y + lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
             conveyorSpeed:      1500
-            lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2 - radius
-            destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2 - radius
+            lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2
+            destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
         }
     }
 

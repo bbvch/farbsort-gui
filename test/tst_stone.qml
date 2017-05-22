@@ -32,5 +32,17 @@ TestCase {
         stone.handleDetectionStarted()
         compare(stone.state, "DETECTING", "state changed to DETECTING")
     }
+
+    function test_stone_changes_color_after_color_detected_event_was_handled()
+    {
+        var trayId = 1
+        var color = "#ff0000" //red
+
+        stone.trayId = trayId
+        stone.handleDetectionStarted()
+        verify(stone.handleColorDetected(color, trayId, 111), "handleColorDetected signal is handled")
+        compare(stone.state, "DETECTING", "state is still DETECTING")
+        compare(stone.color, color, "color changed to red")
+    }
 }
 
