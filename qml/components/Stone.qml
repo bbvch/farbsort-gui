@@ -61,9 +61,7 @@ Item {
     }
 
     function handleStartEjecting(trayId) {
-        if(trayId === stoneObject.trayId &&
-           ("MOVING" == stoneObject.state || "MOVED" == stoneObject.state)) {
-            stoneObject.state = "MOVED"
+        if(trayId === stoneObject.trayId && "MOVING" == stoneObject.state) {
             if(needsEjection()) {
                 stoneObject._ejectedTime = new Date()
                 state = "EJECTING"
@@ -148,7 +146,6 @@ Item {
         State { name: "DETECTING" },
         State { name: "DETECTED" },
         State { name: "MOVING" },
-        State { name: "MOVED" },
         State { name: "EJECTING" },
         State { name: "REACHED" }
     ]
@@ -181,18 +178,10 @@ Item {
         },
         Transition {
             from: "MOVING";
-            to: "MOVED";
-            onRunningChanged: {
-                if(!running) {
-                    conveyorAnimation.complete()
-                }
-            }
-        },
-        Transition {
-            from: "MOVED";
             to: "EJECTING";
             onRunningChanged: {
                 if(!running) {
+                    conveyorAnimation.complete()
                     ejectorChipAnimation.start()
                 }
             }
