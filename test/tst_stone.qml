@@ -9,15 +9,25 @@ TestCase {
 
     property Stone stone: null
 
-    function init()
+    function createStone()
     {
         var component = Qt.createComponent("qrc:/components/Stone.qml")
-        stone =  component.createObject(stoneTest)
+        return component.createObject(stoneTest)
+    }
+
+    function init()
+    {
+        stone = createStone()
+    }
+
+    function destroyStone(stone)
+    {
+        stone.destroy()
     }
 
     function cleanup()
     {
-        stone.destroy()
+        destroyStone(stone)
     }
 
     function test_stone_is_correclty_initialized_after_creation()
@@ -47,7 +57,7 @@ TestCase {
         compare(stone.destinationXPos, destinationXPos, "stone is moved to destinationXPos " + destinationXPos)
     }
 
-    function test_stone_is_move_to_tray_one_when_color_blue_is_detected()
+    function test_stone_is_moved_to_tray_one_when_color_blue_is_detected()
     {
         stone.state = "DETECTING"
         stone.color = "#0000ff"
@@ -76,6 +86,35 @@ TestCase {
 
         verify(stone.handleTrayReached(trayId), "trayReached event handled for tray " + trayId)
         compare(stone.state, "REACHED", "state change to REACHED")
+    }
+
+    function process_stone_with_timeout_for_each_step(timedStone, timeoutMs)
+    {
+        var startTime = new Date()
+        timedStone.handleDetectionStarted()
+        sleep(timeoutMs)
+        timedStone.handleColorDetected("#ff0000", 1, 111)
+        sleep(timeoutMs)
+        timedStone.handleDetectorEndReached()
+        sleep(timeoutMs)
+        timedStone.handleStartEjecting(1)
+        sleep(timeoutMs)
+        timedStone.handleTrayReached(1)
+        var endTime = new Date()
+        verify(timedStone.neededTime() <= endTime - startTime && timedStone.neededTime() >= 4 * timeoutMs)
+    }
+
+    function test_needed_time_for_a_stone_from_detector_to_bin_is_equal()
+    {
+        process_stone_with_timeout_for_each_step(stone, 1)
+    }
+
+    function test_needed_time_for_multiple_stones_from_detector_to_bin_is_equal()
+    {
+        process_stone_with_timeout_for_each_step(stone, 1)
+        var stone2 = createStone()
+        process_stone_with_timeout_for_each_step(stone2, 2)
+        destroyStone(stone2)
     }
 }
 
