@@ -158,7 +158,7 @@ Rectangle {
 
         Text{
             id: whiteNoOfPiecesText
-            text: qsTr("%1 Stk.").arg(countingLogic.whiteStoneCounter)
+            text: qsTr("%1 Stk.").arg(countingLogic.trayOneStoneCounter.count)
             color: Style.textColor
 
             Layout.row: 0
@@ -173,7 +173,7 @@ Rectangle {
 
         Text{
             id: redNoOfPiecesText
-            text: qsTr("%1 Stk.").arg(countingLogic.redStoneCounter)
+            text: qsTr("%1 Stk.").arg(countingLogic.trayTwoStoneCounter.count)
             color: Style.textColor
 
             Layout.row: 2
@@ -188,7 +188,7 @@ Rectangle {
 
         Text{
             id: blueNoOfPiecesText
-            text: qsTr("%1 Stk.").arg(countingLogic.blueStoneCounter)
+            text: qsTr("%1 Stk.").arg(countingLogic.trayThreeStoneCounter.count)
             color: Style.textColor
 
             Layout.row: 4
@@ -203,7 +203,7 @@ Rectangle {
 
         Text{
             id: whiteSpeedText
-            text: qsTr("\u00D8 %1 s").arg(3.8)
+            text: qsTr("\u00D8 %1 ms").arg(countingLogic.trayOneStoneCounter.averageTime)
             color: Style.textColor
 
             Layout.row: 0
@@ -218,7 +218,7 @@ Rectangle {
 
         Text{
             id: redSpeedText
-            text: qsTr("\u00D8 %1 s").arg(4.3)
+            text: qsTr("\u00D8 %1 ms").arg(countingLogic.trayTwoStoneCounter.averageTime)
             color: Style.textColor
 
             Layout.row: 2
@@ -233,7 +233,7 @@ Rectangle {
 
         Text{
             id: blueSpeedText
-            text: qsTr("\u00D8 %1 s").arg(4.7)
+            text: qsTr("\u00D8 %1 ms").arg(countingLogic.trayThreeStoneCounter.averageTime)
             color: Style.textColor
 
             Layout.row: 4

@@ -14,7 +14,8 @@ SOURCES += src/main.cpp \
     src/websocketclient.cpp \
     src/websocketclientsimulation.cpp \
     src/countinglogic.cpp \
-    src/EventLog.cpp
+    src/EventLog.cpp \
+    src/stonecounter.cpp
 
 HEADERS += \
     include/websocketclient.h \
@@ -22,7 +23,8 @@ HEADERS += \
     include/websocketclientsimulation.h \
     include/countinglogic.h \
     include/EventLog.h \
-    include/StatisticModel.h
+    include/StatisticModel.h \
+    include/stonecounter.h
 
 RESOURCES += res/qml.qrc \
     res/images.qrc

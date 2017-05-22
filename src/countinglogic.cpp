@@ -4,57 +4,34 @@
 
 CountingLogic::CountingLogic()
   : QObject(nullptr)
-  , m_redStoneCounter(0)
-  , m_blueStoneCounter(0)
-  , m_whiteStoneCounter(0)
-  , m_trayOneColor(Qt::blue) //, m_trayOneColor(0x1E,0x90,0xFF) // dogerblue
+  , m_trayOneColor(Qt::blue)
   , m_trayTwoColor(Qt::red)
   , m_trayThreeColor(Qt::white)
 {
+    m_stoneCounters.push_back(QSharedPointer<StoneCounter>(new StoneCounter()));
+    m_stoneCounters.push_back(QSharedPointer<StoneCounter>(new StoneCounter()));
+    m_stoneCounters.push_back(QSharedPointer<StoneCounter>(new StoneCounter()));
 }
 
-void CountingLogic::trayOneLightbarrierActivationChanged(const bool active)
+StoneCounter* CountingLogic::trayOneStoneCounter()
 {
-    if(active) {
-        incrementStoneCounter(trayOneColor());
-    }
+    return m_stoneCounters[0].data();
 }
 
-void CountingLogic::trayTwoLightbarrierActivationChanged(const bool active)
+StoneCounter* CountingLogic::trayTwoStoneCounter()
 {
-    if(active) {
-        incrementStoneCounter(trayTwoColor());
-    }
+    return m_stoneCounters[1].data();
 }
 
-void CountingLogic::trayThreeLightbarrierActivationChanged(const bool active)
+StoneCounter* CountingLogic::trayThreeStoneCounter()
 {
-    if(active) {
-        incrementStoneCounter(trayThreeColor());
-    }
+    return m_stoneCounters[2].data();
 }
 
-void CountingLogic::resetRedStoneCounter()
+void CountingLogic::stoneReachedInTray(const int trayId, const int timeNeeded)
 {
-    if(0 != m_redStoneCounter) {
-        m_redStoneCounter = 0;
-        emit redStoneCounterChanged();
-    }
-}
-
-void CountingLogic::resetBlueStoneCounter()
-{
-    if(0 != m_blueStoneCounter) {
-        m_blueStoneCounter = 0;
-        emit blueStoneCounterChanged();
-    }
-}
-
-void CountingLogic::resetWhiteStoneCounter()
-{
-    if(0 != m_whiteStoneCounter) {
-        m_whiteStoneCounter = 0;
-        emit whiteStoneCounterChanged();
+    if(trayId > 0 && trayId <= m_stoneCounters.count()) {
+        m_stoneCounters[trayId - 1]->addStone(timeNeeded);
     }
 }
 
@@ -80,21 +57,4 @@ void CountingLogic::setTrayThreeColor(const QColor color)
         m_trayThreeColor = color;
         emit trayThreeColorChanged();
     }
-}
-
-void CountingLogic::incrementStoneCounter(const QColor color)
-{
-    if(color == QColor(Qt::blue)) {
-        m_blueStoneCounter++;
-        emit blueStoneCounterChanged();
-    } else if(color == QColor(Qt::red)) {
-        m_redStoneCounter++;
-        emit redStoneCounterChanged();
-    } else if(color == QColor(Qt::white)) {
-        m_whiteStoneCounter++;
-        emit whiteStoneCounterChanged();
-    } else {
-        qCritical() << "received untracked color: " << color;
-    }
-
 }

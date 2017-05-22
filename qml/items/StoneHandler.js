@@ -75,22 +75,20 @@ function startEjecting(trayId)
 // handle trayReached event
 function trayReached(trayId)
 {
-    var handled = false
     var index = 0
     while(index < stones.length) {
         var stone = stones[index]
         if(stone) {
             if(stone.handleTrayReached(trayId)) {
-                console.log("----------------------- stone in tray#" + trayId + " reached in " + stone.neededTime() + "ms")
-                handled = true
-                break;
+                var neededTime = stone.neededTime()
+                console.log("----------------------- stone in tray#" + trayId + " reached in " + neededTime + "ms")
+                return neededTime
             }
         }
         index++
     }
-    if(!handled) {
-        console.log("WARNING: trayReached event was not handled!")
-    }
+    console.log("WARNING: trayReached event was not handled!")
+    return false
 }
 
 // removes all stones in the given tray

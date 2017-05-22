@@ -1,16 +1,20 @@
 #ifndef COUNTINGLOGIC_H
 #define COUNTINGLOGIC_H
 
+#include "stonecounter.h"
+
 #include <QObject>
 #include <QColor>
+#include <QVector>
+#include <QSharedPointer>
 
 class CountingLogic : public QObject
 {
     Q_OBJECT
     // counters
-    Q_PROPERTY(unsigned int redStoneCounter READ redStoneCounter RESET resetRedStoneCounter  NOTIFY redStoneCounterChanged)
-    Q_PROPERTY(unsigned int blueStoneCounter READ blueStoneCounter RESET resetBlueStoneCounter  NOTIFY blueStoneCounterChanged)
-    Q_PROPERTY(unsigned int whiteStoneCounter READ whiteStoneCounter RESET resetWhiteStoneCounter  NOTIFY whiteStoneCounterChanged)
+    Q_PROPERTY(StoneCounter* trayOneStoneCounter READ trayOneStoneCounter NOTIFY trayOneStoneCounterChanged)
+    Q_PROPERTY(StoneCounter* trayTwoStoneCounter READ trayTwoStoneCounter NOTIFY trayTwoStoneCounterChanged)
+    Q_PROPERTY(StoneCounter* trayThreeStoneCounter READ trayThreeStoneCounter NOTIFY trayThreeStoneCounterChanged)
     // color assignment
     Q_PROPERTY(QColor trayOneColor READ trayOneColor WRITE setTrayOneColor  NOTIFY trayOneColorChanged)
     Q_PROPERTY(QColor trayTwoColor READ trayTwoColor WRITE setTrayTwoColor  NOTIFY trayTwoColorChanged)
@@ -20,43 +24,34 @@ public:
     explicit CountingLogic();
 
 signals:
-    void redStoneCounterChanged();
-    void blueStoneCounterChanged();
-    void whiteStoneCounterChanged();
     void trayOneColorChanged();
     void trayTwoColorChanged();
     void trayThreeColorChanged();
+    void trayOneStoneCounterChanged();
+    void trayTwoStoneCounterChanged();
+    void trayThreeStoneCounterChanged();
 
 public slots:
-    void trayOneLightbarrierActivationChanged(const bool active);
-    void trayTwoLightbarrierActivationChanged(const bool active);
-    void trayThreeLightbarrierActivationChanged(const bool active);
+    StoneCounter* trayOneStoneCounter();
+    StoneCounter* trayTwoStoneCounter();
+    StoneCounter* trayThreeStoneCounter();
+    void stoneReachedInTray(const int trayId, const int timeNeeded);
 
 protected:
     // getter
-    int redStoneCounter() const { return m_redStoneCounter; }
-    int blueStoneCounter() const { return m_blueStoneCounter; }
-    int whiteStoneCounter() const { return m_whiteStoneCounter; }
     QColor trayOneColor() const { return m_trayOneColor; }
     QColor trayTwoColor() const { return m_trayTwoColor; }
     QColor trayThreeColor() const { return m_trayThreeColor; }
     // setter
-    void resetRedStoneCounter();
-    void resetBlueStoneCounter();
-    void resetWhiteStoneCounter();
     void setTrayOneColor(const QColor color);
     void setTrayTwoColor(const QColor color);
     void setTrayThreeColor(const QColor color);
-    // helpers
-    void incrementStoneCounter(const QColor color);
 
 private:
-    unsigned int m_redStoneCounter;
-    unsigned int m_blueStoneCounter;
-    unsigned int m_whiteStoneCounter;
     QColor m_trayOneColor;
     QColor m_trayTwoColor;
     QColor m_trayThreeColor;
+    QVector<QSharedPointer<StoneCounter>> m_stoneCounters;
 };
 
 #endif // COUNTINGLOGIC_H

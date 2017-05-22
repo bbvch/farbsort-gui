@@ -435,7 +435,10 @@ Rectangle {
     readonly property bool trayOneActivated: lightbarrierTrayOne.lightbarrierInterruted
     onTrayOneActivatedChanged: {
         if(trayOneActivated) {
-            StoneHandler.trayReached(1)
+            var timeNeeded = StoneHandler.trayReached(1)
+            if(timeNeeded) {
+                countingLogic.stoneReachedInTray(1, timeNeeded);
+            }
         } else {
             StoneHandler.removeStonesFromTray(1)
         }
@@ -445,7 +448,10 @@ Rectangle {
     readonly property bool trayTwoActivated: lightbarrierTrayTwo.lightbarrierInterruted
     onTrayTwoActivatedChanged: {
         if(trayTwoActivated) {
-            StoneHandler.trayReached(2)
+            var timeNeeded = StoneHandler.trayReached(2)
+            if(timeNeeded) {
+                countingLogic.stoneReachedInTray(2, timeNeeded);
+            }
         } else {
             StoneHandler.removeStonesFromTray(2)
         }
@@ -455,7 +461,10 @@ Rectangle {
     readonly property bool trayThreeActivated: lightbarrierTrayThree.lightbarrierInterruted
     onTrayThreeActivatedChanged: {
         if(trayThreeActivated) {
-            StoneHandler.trayReached(3)
+            var timeNeeded = StoneHandler.trayReached(3)
+            if(timeNeeded) {
+                countingLogic.stoneReachedInTray(3, timeNeeded);
+            }
         } else {
             StoneHandler.removeStonesFromTray(3)
         }
