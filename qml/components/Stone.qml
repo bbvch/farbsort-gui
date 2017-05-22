@@ -128,6 +128,12 @@ Item {
         easing.type: Easing.Linear
         duration: conveyorSpeed
         running: false
+        onRunningChanged: {
+            if(!running && !needsEjection()) {
+                state = "REACHED"
+                deletionTimer.start()
+            }
+        }
     }
 
     NumberAnimation {
@@ -168,11 +174,6 @@ Item {
                 if(!running) {
                     detectionAnimation.complete()
                     conveyorAnimation.start()
-                    // TODO: move to animation end
-                    if(!needsEjection()) {
-                        state = "REACHED"
-                        deletionTimer.start()
-                    }
                 }
             }
         },
@@ -199,7 +200,7 @@ Item {
 
     Timer {
         id: deletionTimer
-        interval: 10000; running: false; repeat: false
+        interval: 5000; running: false; repeat: false
         onTriggered: {
             destructionRequested(stoneObject);
         }
