@@ -33,9 +33,9 @@ Rectangle {
             lightbarrierTrayOne.lightbarrierInterruted:   websocketClient.lightbarrierThreeState
             lightbarrierTrayTwo.lightbarrierInterruted:   websocketClient.lightbarrierFourState
             lightbarrierTrayThree.lightbarrierInterruted: websocketClient.lightbarrierFiveState
-            lightbarrierTrayOne.trayColor:                countingLogic.trayOneColor
-            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoColor
-            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeColor
+            lightbarrierTrayOne.trayColor:                countingLogic.trayOneStoneCounter.color
+            lightbarrierTrayTwo.trayColor:                countingLogic.trayTwoStoneCounter.color
+            lightbarrierTrayThree.trayColor:              countingLogic.trayThreeStoneCounter.color
 
             Component.onCompleted: {
                 websocketClient.colorDetected.connect(simulator.onColorDetected)
