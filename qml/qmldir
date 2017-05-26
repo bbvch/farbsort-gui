@@ -1,1 +1,2 @@
 singleton Style 1.0 Style.qml
+singleton Dimensions 1.0 Dimensions.qml

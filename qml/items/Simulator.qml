@@ -12,6 +12,9 @@ Rectangle {
     id: simulator
     color: "white"
 
+    width: Dimensions.simulatorLength
+    height: Dimensions.simulatorHeight
+
     property bool connected: false
     property alias conveyor: conveyor
     property alias ejectorOne: ejectorOne
@@ -36,13 +39,13 @@ Rectangle {
             var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
             var trayId = 0
             if(color === lightbarrierTrayOne.trayColor) {
-                finalPosition = layoutGrid.x + lightbarrierTrayOne.x + lightbarrierTrayOne.width / 2
+                finalPosition = Dimensions.ejectorOneHoricontalCenterFactor * simulator.width
                 trayId = 1
             } else if(color === lightbarrierTrayTwo.trayColor) {
-                finalPosition = layoutGrid.x + lightbarrierTrayTwo.x + lightbarrierTrayTwo.width / 2
+                finalPosition = Dimensions.ejectorTwoHoricontalCenterFactor * simulator.width
                 trayId = 2
             } else if(color === lightbarrierTrayThree.trayColor) {
-                finalPosition = layoutGrid.x + lightbarrierTrayThree.x + lightbarrierTrayThree.width / 2
+                finalPosition = Dimensions.ejectorThreeHoricontalCenterFactor * simulator.width
                 trayId = 3
             }
 
@@ -59,360 +62,227 @@ Rectangle {
 
     Conveyor {
         id: conveyor
-        height: parent.height/8
-        anchors.left: parent.left
-        anchors.leftMargin: Style.bigMargin
-        anchors.right: unidentifiedObjectBin.left
-        anchors.rightMargin: Style.bigMargin
-        anchors.verticalCenter:   parent.verticalCenter
+
+        height: Dimensions.conveyorHeightFactor * parent.height
+        width: Dimensions.conveyorWidthFactor * parent.width
+        y: Dimensions.conveyorVerticalCenterFactor * parent.height - height / 2
+        //anchors.left: parent.left
+        //anchors.right: unidentifiedObjectBin.left
+        anchors.leftMargin: Style.smallMargin
+        anchors.rightMargin: Style.smallMargin
+
         velocity: 5.7
     }
 
     Rectangle {
         id: unidentifiedObjectBin
-        height: parent.height/8
-        width:  parent.height/8
+
+        height: Dimensions.undefinedBinHeightFactor * parent.height
+        width:  Dimensions.undefinedBinWidthFactor * parent.width
+        anchors.verticalCenter: conveyor.verticalCenter
+        anchors.left: conveyor.right
+        anchors.right: parent.right
+        anchors.rightMargin: Style.smallMargin
+
         radius: 4
         border.color: "lightgray"
         color: "#eceff1"
         border.width: 1
-        anchors.right: parent.right
-        anchors.rightMargin: Style.bigMargin
-        anchors.verticalCenter: parent.verticalCenter
+    }
+
+    LightBarrier {
+        id: bevorColorRecognition
+        active:  lightbarrierBeforeColorDetectionState
+
+        // TODO: use factors
+        height: conveyor.height * 2
+        width: conveyor.height / 2
+        anchors.verticalCenter: conveyor.verticalCenter
+        x: (Dimensions.posXSensorOneFactor * parent.width) - width / 2
+
+        Text{
+            text:"S1"
+            color: Style.textColor
+            anchors.top: parent.top
+            anchors.right: parent.left
+        }
+    }
+
+    ColorRecognitionUnit {
+        id: colorRecongnition
+        color: "red"
+
+        // TODO: use factors
+        width: 200
+        height: Dimensions.colorDetectorHeightFactor * parent.height
+        anchors.verticalCenter: conveyor.verticalCenter
+        x: (Dimensions.colorDetectorHoricontalCenterFactor * parent.width) - width / 2
+
+        Text{
+            text:qsTr("Farberkennung")
+            color: Style.textColor
+            anchors.bottom: parent.top
+            anchors.bottomMargin: Style.smallMargin/2
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    LightBarrier {
+        id: afterColorRecognition
+        active: lightbarrierAfterColorDetectionState
+
+        // TODO: use factors
+        height: conveyor.height * 2
+        width: conveyor.height / 2
+        anchors.verticalCenter: conveyor.verticalCenter
+        x: (Dimensions.posXSensorTwoFactor * parent.width) - width / 2
+
+        Text{
+            text:"S2"
+            color: Style.textColor
+            anchors.top: parent.top
+            anchors.left: parent.right
+        }
+    }
+
+    Ejector {
+        id: ejectorOne
+
+
+        height: Dimensions.ejectorHeightFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.height
+        anchors.bottom: conveyor.top
+        x: Dimensions.ejectorOneHoricontalCenterFactor * parent.width - width / 2
+
+        ejectDistance: conveyor.height/2
+
+        Text{
+            text:"A1"
+            color: Style.textColor
+            anchors.top: parent.top
+            anchors.left: parent.right
+            anchors.leftMargin: Style.smallMargin
+        }
+
+        valveState: websocketClient.valve1State
+    }
+
+    Ejector {
+        id: ejectorTwo
+
+        height: Dimensions.ejectorHeightFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.height
+        anchors.bottom: conveyor.top
+        x: Dimensions.ejectorTwoHoricontalCenterFactor * parent.width - width / 2
+
+        ejectDistance: conveyor.height/2
+
+        Text{
+            text:"A2"
+            color: Style.textColor
+            anchors.top: parent.top
+            anchors.left: parent.right
+            anchors.leftMargin: Style.smallMargin
+        }
+
+        valveState: websocketClient.valve2State
+    }
+
+    Ejector {
+        id: ejectorThree
+
+        height: Dimensions.ejectorHeightFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.height
+        anchors.bottom: conveyor.top
+        x: Dimensions.ejectorThreeHoricontalCenterFactor * parent.width - width / 2
+
+        ejectDistance: conveyor.height/2
+
+        Text{
+            text:"A3"
+            color: Style.textColor
+            anchors.top: parent.top
+            anchors.left: parent.right
+            anchors.leftMargin: Style.smallMargin
+        }
+
+        valveState: websocketClient.valve3State
     }
 
 
-    GridLayout {
-        id: layoutGrid
-        anchors.fill: parent
-        anchors.margins: Style.bigMargin
-        anchors.leftMargin: 2*Style.bigMargin
-        rows: 7
-        columns: 9
-        rowSpacing: 0
-        columnSpacing: 0
+    Tray {
+        id: lightbarrierTrayOne
+        trayColor: "white"
+        lightbarrierInterruted: false
 
-        Item {
-            id:spacer1
-//            color: "transparent"
-//            border.color: "gray"
+        height: Dimensions.slideHeightFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.height
+        anchors.top: conveyor.bottom
+        x: Dimensions.ejectorOneHoricontalCenterFactor * parent.width - width / 2
 
-            Layout.row: 0
-            Layout.rowSpan: 2
-            Layout.column: 0
-            Layout.columnSpan: 4
-            Layout.preferredWidth:parent.width/9
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignLeft
-            Layout.margins: 0
+        Text{
+            text:"S3"
+            color: Style.textColor
+            anchors.top: parent.bottom
+            anchors.topMargin: -Style.smallMargin
+            anchors.left: parent.right
+            anchors.leftMargin: -(3*Style.smallMargin)
         }
+    }
 
-        LightBarrier {
-            id: bevorColorRecognition
-            active:  lightbarrierBeforeColorDetectionState
+    Tray {
+        id: lightbarrierTrayTwo
+        trayColor: "red"
+        lightbarrierInterruted: false
 
-            Layout.row: 2
-            Layout.rowSpan: 3
-            Layout.column: 0
-            Layout.columnSpan: 1
-            Layout.preferredWidth:parent.width/24
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.margins: 0
-            Layout.rightMargin: Style.bigMargin
+        height: Dimensions.slideHeightFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.height
+        anchors.top: conveyor.bottom
+        x: Dimensions.ejectorTwoHoricontalCenterFactor * parent.width - width / 2
 
-            Text{
-                text:"S1"
-                color: Style.textColor
-                anchors.top: parent.top
-                anchors.right: parent.left
-            }
+
+        Text{
+            text:"S4"
+            color: Style.textColor
+            anchors.top: parent.bottom
+            anchors.topMargin: -Style.smallMargin
+            anchors.left: parent.right
+            anchors.leftMargin: -(3*Style.smallMargin)
         }
+    }
 
-        Item {
-            id:spacer2
-//            color: "transparent"
-//            border.color: "gray"
 
-            Layout.row: 5
-            Layout.rowSpan: 2
-            Layout.column: 0
-            Layout.columnSpan: 2
-            Layout.preferredWidth:parent.width/9
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignLeft
-            Layout.margins: 0
+    Tray {
+        id: lightbarrierTrayThree
+        trayColor: "lightblue"
+        lightbarrierInterruted: false
+
+        height: Dimensions.slideHeightFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.height
+        anchors.top: conveyor.bottom
+        x: Dimensions.ejectorThreeHoricontalCenterFactor * parent.width - width / 2
+
+        Text{
+            text:"S5"
+            color: Style.textColor
+            anchors.top: parent.bottom
+            anchors.topMargin: -Style.smallMargin
+            anchors.left: parent.right
+            anchors.leftMargin: -(3*Style.smallMargin)
         }
-
-        ColorRecognitionUnit {
-            id: colorRecongnition
-            color: "red"
-
-            Layout.row: 2
-            Layout.rowSpan: 3
-            Layout.column: 1
-            Layout.columnSpan: 2
-            Layout.preferredWidth: parent.width*2/9
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.margins: 0
-
-            Text{
-                text:qsTr("Farberkennung")
-                color: Style.textColor
-                anchors.bottom: parent.top
-                anchors.bottomMargin: Style.smallMargin/2
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-        }
-
-        LightBarrier {
-            id: afterColorRecognition
-            active: lightbarrierAfterColorDetectionState
-
-            Layout.row: 2
-            Layout.rowSpan: 3
-            Layout.column: 3
-            Layout.columnSpan: 1
-            Layout.preferredWidth: parent.width/24
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.margins: 0
-
-            Text{
-                text:"S2"
-                color: Style.textColor
-                anchors.top: parent.top
-                anchors.left: parent.right
-            }
-        }
-
-        Item {
-            id:spacer3
-            opacity: 0.5
-//            color: "olive"
-//            border.color: "gray"
-
-            Layout.row: 3
-            Layout.rowSpan: 1
-            Layout.column: 4
-            Layout.columnSpan: 5
-//            Layout.fillWidth : true
-            Layout.preferredWidth:parent.width*4/9
-            Layout.preferredHeight: parent.height/8
-            Layout.alignment: Qt.AlignTop
-            Layout.margins: 0
-        }
-
-        Ejector {
-            id: ejectorOne
-
-            Layout.row: 0
-            Layout.rowSpan: 3
-            Layout.column: 4
-            Layout.columnSpan: 1
-            Layout.preferredWidth: 40
-            Layout.preferredHeight: parent.height*3/8
-            Layout.alignment: Qt.AlignBottom| Qt.AlignHCenter
-            Layout.margins: 0
-            ejectDistance: conveyor.height/2
-
-            Text{
-                text:"A1"
-                color: Style.textColor
-                anchors.top: parent.top
-                anchors.left: parent.right
-                anchors.leftMargin: Style.smallMargin
-            }
-
-            valveState: websocketClient.valve1State
-        }
-
-        Ejector {
-            id: ejectorTwo
-
-            Layout.row: 0
-            Layout.rowSpan: 3
-            Layout.column: 5
-            Layout.columnSpan: 1
-            Layout.preferredWidth: 40
-            Layout.preferredHeight: parent.height*3/8
-            Layout.alignment: Qt.AlignBottom| Qt.AlignHCenter
-            Layout.margins: 0
-            ejectDistance: conveyor.height/2
-
-            Text{
-                text:"A2"
-                color: Style.textColor
-                anchors.top: parent.top
-                anchors.left: parent.right
-                anchors.leftMargin: Style.smallMargin
-            }
-
-            valveState: websocketClient.valve2State
-        }
-
-        Ejector {
-            id: ejectorThree
-            Layout.fillHeight: false
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-
-            Layout.row: 0
-            Layout.rowSpan: 3
-            Layout.column: 6
-            Layout.columnSpan: 1
-            Layout.preferredWidth: 40
-            Layout.preferredHeight: parent.height*3/8
-            Layout.margins: 0
-            ejectDistance: conveyor.height/2
-
-            Text{
-                text:"A3"
-                color: Style.textColor
-                anchors.top: parent.top
-                anchors.left: parent.right
-                anchors.leftMargin: Style.smallMargin
-            }
-
-            valveState: websocketClient.valve3State
-        }
-
-        Tray {
-            id: lightbarrierTrayOne
-            trayColor: "white"
-            lightbarrierInterruted: false
-
-            Layout.row: 4
-            Layout.rowSpan: 2
-            Layout.column: 4
-            Layout.columnSpan: 1
-            Layout.preferredWidth: parent.width*3/18
-            Layout.preferredHeight: parent.height / 3
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-            Layout.margins: 0
-            Layout.bottomMargin: 5
-
-            Text{
-                text:"S3"
-                color: Style.textColor
-                anchors.top: parent.bottom
-                anchors.topMargin: -Style.smallMargin
-                anchors.left: parent.right
-                anchors.leftMargin: -(3*Style.smallMargin)
-            }
-        }
-
-        Tray {
-            id: lightbarrierTrayTwo
-            width: 40
-            trayColor: "red"
-            lightbarrierInterruted: false
-            Layout.row: 4
-            Layout.rowSpan: 2
-            Layout.column: 5
-            Layout.columnSpan: 1
-            Layout.preferredWidth: parent.width*3/18
-            Layout.preferredHeight: parent.height / 3
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-            Layout.margins: 0
-            Layout.bottomMargin: 5
-
-            Text{
-                text:"S4"
-                color: Style.textColor
-                anchors.top: parent.bottom
-                anchors.topMargin: -Style.smallMargin
-                anchors.left: parent.right
-                anchors.leftMargin: -(3*Style.smallMargin)
-            }
-        }
-
-        Item {
-            id: spacer5
-//            color: "transparent"
-//            border.color: "gray"
-
-            Layout.row: 6
-            Layout.rowSpan: 1
-            Layout.column: 5
-            Layout.columnSpan: 1
-//            Layout.maximumWidth: 140
-            Layout.preferredWidth: parent.width / 7
-            Layout.preferredHeight: 5
-            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
-            Layout.margins: 0
-        }
-
-        Tray {
-            id: lightbarrierTrayThree
-            trayColor: "lightblue"
-            lightbarrierInterruted: false
-            Layout.row: 4
-            Layout.rowSpan: 2
-            Layout.column: 6
-            Layout.columnSpan: 1
-            Layout.preferredWidth: parent.width*3/18
-            Layout.preferredHeight: parent.height / 3
-            Layout.margins: 0
-            Layout.bottomMargin: 5
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-
-            Text{
-                text:"S5"
-                color: Style.textColor
-                anchors.top: parent.bottom
-                anchors.topMargin: -Style.smallMargin
-                anchors.left: parent.right
-                anchors.leftMargin: -(3*Style.smallMargin)
-            }
-        }
-
-        Item {
-            id: spacer6
-//            color: "transparent"
-//            border.color: "gray"
-
-            Layout.row: 0
-            Layout.rowSpan: 3
-            Layout.column: 8
-            Layout.columnSpan: 1
-
-//            Layout.fillHeight: true
-            Layout.preferredWidth: parent.width / 9
-            Layout.preferredHeight: parent.height/7
-            Layout.alignment: Qt.AlignBottom | Qt.AlignHCenter
-            Layout.margins: 0
-            Layout.bottomMargin: 5
-        }
-
-        Item {
-            id: spacer7
-//            color: "transparent"
-//            border.color: "gray"
-
-            Layout.row: 4
-            Layout.rowSpan: 3
-            Layout.column: 8
-            Layout.columnSpan: 1
-
-            Layout.preferredWidth: parent.width / 9
-            Layout.preferredHeight: parent.height*2/7
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-            Layout.margins: 0
-        }
-    } // GridLayout
+    }
 
     Component {
         id: preconfigureStone
 
         Stone {
             id: stoneInstance
-            radius: conveyor.height / 3
-            startPosX:          layoutGrid.x + bevorColorRecognition.x + bevorColorRecognition.width / 2
+            radius: conveyor.height / 4
+            startPosX:          Dimensions.posXSensorOneFactor * parent.width
             startPosY:          conveyor.y + conveyor.height / 2
-            stopPosY:           layoutGrid.y + lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
+            stopPosY:           lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
             conveyorSpeed:      1500
-            lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2
+            lightbarrierAfterDetectorXPos: Dimensions.posXSensorTwoFactor * parent.width
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
         }
     }

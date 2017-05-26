@@ -67,7 +67,8 @@ DISTFILES += \
     qml/components/EventLog.qml \
     qml/components/EventTableView.qml \
     qml/components/LegendContent.qml \
-    js/StoneHandler.js
+    js/StoneHandler.js \
+    qml/Dimensions.qml
 
 lupdate_only{
 SOURCES += $${DISTFILES}
