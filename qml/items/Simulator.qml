@@ -12,7 +12,7 @@ Rectangle {
     id: simulator
     color: "white"
 
-    width: Dimensions.simulatorLength
+    width: Dimensions.simulatorWidth
     height: Dimensions.simulatorHeight
 
     property bool connected: false
