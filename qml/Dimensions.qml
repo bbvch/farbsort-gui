@@ -34,7 +34,8 @@ QtObject {
     readonly property double undefinedBinWidthFactor: undefinedBinWidth / simulatorWidth
 
     readonly property double colorDetectorHorizontalCenterFactor: colorDetectorHorizontalCenter / simulatorWidth
-    readonly property double colorDetectorHeightFactor: conveyorHeightFactor * 1.5
+    readonly property double colorDetectorHeightFactor: conveyorHeightFactor * 2
+    readonly property double colorDetectorWidthFactor: 0.25
 
     readonly property double sensorOneHorizontalCenterFactor: sensorOneHorizontalCenter / simulatorWidth
     readonly property double sensorTwoHorizontalCenterFactor: sensorTwoHorizontalCenter / simulatorWidth

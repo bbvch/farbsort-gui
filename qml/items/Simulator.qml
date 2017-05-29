@@ -112,8 +112,7 @@ Rectangle {
         id: colorRecongnition
         color: "red"
 
-        // TODO: use factors
-        width: 200
+        width: Dimensions.colorDetectorWidthFactor * parent.width
         height: Dimensions.colorDetectorHeightFactor * parent.height
         anchors.verticalCenter: conveyor.verticalCenter
         x: (Dimensions.colorDetectorHorizontalCenterFactor * parent.width) - width / 2
