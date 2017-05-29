@@ -34,14 +34,6 @@ unsigned int StoneCounter::averageTime() const
     return m_averageTime;
 }
 
-void StoneCounter::setAverageTime(const unsigned int averageTime)
-{
-    if(averageTime != m_averageTime) {
-        m_averageTime = 0;
-        emit averageTimeChanged();
-    }
-}
-
 QString StoneCounter::name() const
 {
     if(QColor(Qt::blue) == m_color) {
@@ -63,17 +55,18 @@ StoneCounter::StoneCounter(const QColor color)
 
 void StoneCounter::addStone(const unsigned int timeNeeded)
 {
+    const unsigned int oldCount = m_count;
     m_count++;
     emit countChanged();
 
-    unsigned int oldTime = m_averageTime;
+    const unsigned int oldAverageTime = m_averageTime;
     if(m_averageTime > 0) {
-        m_averageTime = (((m_count - 1) * m_averageTime) + timeNeeded) / m_count;
+        m_averageTime = ((oldCount * m_averageTime) + timeNeeded) / m_count;
     } else {
         m_averageTime = timeNeeded;
     }
-    if(oldTime != m_averageTime) {
-        averageTimeChanged();
+    if(oldAverageTime != m_averageTime) {
+        emit averageTimeChanged();
     }
 }
 
