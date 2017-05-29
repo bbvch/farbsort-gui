@@ -147,7 +147,7 @@ Rectangle {
 
 
         height: Dimensions.ejectorHeightFactor * parent.height
-        width: Dimensions.ejectorWidthFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.width
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorOneHorizontalCenterFactor * parent.width - width / 2
 
@@ -168,7 +168,7 @@ Rectangle {
         id: ejectorTwo
 
         height: Dimensions.ejectorHeightFactor * parent.height
-        width: Dimensions.ejectorWidthFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.width
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorTwoHorizontalCenterFactor * parent.width - width / 2
 
@@ -189,7 +189,7 @@ Rectangle {
         id: ejectorThree
 
         height: Dimensions.ejectorHeightFactor * parent.height
-        width: Dimensions.ejectorWidthFactor * parent.height
+        width: Dimensions.ejectorWidthFactor * parent.width
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorThreeHorizontalCenterFactor * parent.width - width / 2
 

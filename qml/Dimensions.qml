@@ -21,7 +21,7 @@ QtObject {
     readonly property double ejectorTwoHorizontalCenter: 29.5
     readonly property double ejectorThreeHorizontalCenter: 35.7
     readonly property double ejectorHeight: 3.0
-    readonly property double ejectorWidth: 3.0 // todo: measure model
+    readonly property double ejectorWidth: 1.5 // todo: measure model
     readonly property double slideHeight: 7.0
     readonly property double slideWidth: 6.0 // todo: measure model
 
