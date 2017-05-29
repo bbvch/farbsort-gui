@@ -9,6 +9,9 @@ QtObject {
     readonly property double undefinedBinWidth: conveyorHeight
     readonly property double undefinedBinHeight: conveyorHeight
 
+    readonly property double lightbarrierOneTwoHeight: conveyorHeight * 1.85
+    readonly property double lightbarrierOneTwoWidth: 0.5
+
     readonly property double colorDetectorHorizontalCenter: 11.0
 
     readonly property double sensorOneHorizontalCenter: 3.0
@@ -25,6 +28,7 @@ QtObject {
     readonly property double simulatorHeight: conveyorHeight + ejectorHeight + slideHeight
     readonly property double simulatorWidth: conveyorWidth + undefinedBinWidth
 
+
     // calculated factors based on space used for simulator item
     readonly property double conveyorHeightFactor: conveyorHeight / simulatorHeight
     readonly property double conveyorWidthFactor: conveyorWidth / simulatorWidth
@@ -32,6 +36,9 @@ QtObject {
 
     readonly property double undefinedBinHeightFactor: undefinedBinHeight / simulatorHeight
     readonly property double undefinedBinWidthFactor: undefinedBinWidth / simulatorWidth
+
+    readonly property double lightbarrierOneTwoHeightFactor: lightbarrierOneTwoHeight / simulatorHeight
+    readonly property double lightbarrierOneTwoWidthFactor: lightbarrierOneTwoWidth / simulatorHeight
 
     readonly property double colorDetectorHorizontalCenterFactor: colorDetectorHorizontalCenter / simulatorWidth
     readonly property double colorDetectorHeightFactor: conveyorHeightFactor * 2

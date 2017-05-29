@@ -94,9 +94,8 @@ Rectangle {
         id: bevorColorRecognition
         active:  lightbarrierBeforeColorDetectionState
 
-        // TODO: use factors
-        height: conveyor.height * 2
-        width: conveyor.height / 2
+        height: Dimensions.lightbarrierOneTwoHeightFactor * parent.height
+        width: Dimensions.lightbarrierOneTwoWidthFactor * parent.width
         anchors.verticalCenter: conveyor.verticalCenter
         x: (Dimensions.sensorOneHorizontalCenterFactor * parent.width) - width / 2
 
@@ -130,9 +129,8 @@ Rectangle {
         id: afterColorRecognition
         active: lightbarrierAfterColorDetectionState
 
-        // TODO: use factors
-        height: conveyor.height * 2
-        width: conveyor.height / 2
+        height: Dimensions.lightbarrierOneTwoHeightFactor * parent.height
+        width: Dimensions.lightbarrierOneTwoWidthFactor * parent.width
         anchors.verticalCenter: conveyor.verticalCenter
         x: (Dimensions.sensorTwoHorizontalCenterFactor * parent.width) - width / 2
 
@@ -140,7 +138,7 @@ Rectangle {
             text:"S2"
             color: Style.textColor
             anchors.top: parent.top
-            anchors.left: parent.right
+            anchors.right: parent.left
         }
     }
 
