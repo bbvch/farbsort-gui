@@ -39,13 +39,13 @@ Rectangle {
             var finalPosition = unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
             var trayId = 0
             if(color === lightbarrierTrayOne.trayColor) {
-                finalPosition = Dimensions.ejectorOneHoricontalCenterFactor * simulator.width
+                finalPosition = Dimensions.ejectorOneHorizontalCenterFactor * simulator.width
                 trayId = 1
             } else if(color === lightbarrierTrayTwo.trayColor) {
-                finalPosition = Dimensions.ejectorTwoHoricontalCenterFactor * simulator.width
+                finalPosition = Dimensions.ejectorTwoHorizontalCenterFactor * simulator.width
                 trayId = 2
             } else if(color === lightbarrierTrayThree.trayColor) {
-                finalPosition = Dimensions.ejectorThreeHoricontalCenterFactor * simulator.width
+                finalPosition = Dimensions.ejectorThreeHorizontalCenterFactor * simulator.width
                 trayId = 3
             }
 
@@ -98,7 +98,7 @@ Rectangle {
         height: conveyor.height * 2
         width: conveyor.height / 2
         anchors.verticalCenter: conveyor.verticalCenter
-        x: (Dimensions.posXSensorOneFactor * parent.width) - width / 2
+        x: (Dimensions.sensorOneHorizontalCenterFactor * parent.width) - width / 2
 
         Text{
             text:"S1"
@@ -116,7 +116,7 @@ Rectangle {
         width: 200
         height: Dimensions.colorDetectorHeightFactor * parent.height
         anchors.verticalCenter: conveyor.verticalCenter
-        x: (Dimensions.colorDetectorHoricontalCenterFactor * parent.width) - width / 2
+        x: (Dimensions.colorDetectorHorizontalCenterFactor * parent.width) - width / 2
 
         Text{
             text:qsTr("Farberkennung")
@@ -135,7 +135,7 @@ Rectangle {
         height: conveyor.height * 2
         width: conveyor.height / 2
         anchors.verticalCenter: conveyor.verticalCenter
-        x: (Dimensions.posXSensorTwoFactor * parent.width) - width / 2
+        x: (Dimensions.sensorTwoHorizontalCenterFactor * parent.width) - width / 2
 
         Text{
             text:"S2"
@@ -152,7 +152,7 @@ Rectangle {
         height: Dimensions.ejectorHeightFactor * parent.height
         width: Dimensions.ejectorWidthFactor * parent.height
         anchors.bottom: conveyor.top
-        x: Dimensions.ejectorOneHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorOneHorizontalCenterFactor * parent.width - width / 2
 
         ejectDistance: conveyor.height/2
 
@@ -173,7 +173,7 @@ Rectangle {
         height: Dimensions.ejectorHeightFactor * parent.height
         width: Dimensions.ejectorWidthFactor * parent.height
         anchors.bottom: conveyor.top
-        x: Dimensions.ejectorTwoHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorTwoHorizontalCenterFactor * parent.width - width / 2
 
         ejectDistance: conveyor.height/2
 
@@ -194,7 +194,7 @@ Rectangle {
         height: Dimensions.ejectorHeightFactor * parent.height
         width: Dimensions.ejectorWidthFactor * parent.height
         anchors.bottom: conveyor.top
-        x: Dimensions.ejectorThreeHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorThreeHorizontalCenterFactor * parent.width - width / 2
 
         ejectDistance: conveyor.height/2
 
@@ -218,7 +218,7 @@ Rectangle {
         height: Dimensions.slideHeightFactor * parent.height
         width: Dimensions.slideWidthFactor * parent.height
         anchors.top: conveyor.bottom
-        x: Dimensions.ejectorOneHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorOneHorizontalCenterFactor * parent.width - width / 2
 
         Text{
             text:"S3"
@@ -238,7 +238,7 @@ Rectangle {
         height: Dimensions.slideHeightFactor * parent.height
         width: Dimensions.slideWidthFactor * parent.height
         anchors.top: conveyor.bottom
-        x: Dimensions.ejectorTwoHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorTwoHorizontalCenterFactor * parent.width - width / 2
 
 
         Text{
@@ -260,7 +260,7 @@ Rectangle {
         height: Dimensions.slideHeightFactor * parent.height
         width: Dimensions.slideWidthFactor * parent.height
         anchors.top: conveyor.bottom
-        x: Dimensions.ejectorThreeHoricontalCenterFactor * parent.width - width / 2
+        x: Dimensions.ejectorThreeHorizontalCenterFactor * parent.width - width / 2
 
         Text{
             text:"S5"
@@ -278,11 +278,11 @@ Rectangle {
         Stone {
             id: stoneInstance
             radius: conveyor.height / 4
-            startPosX:          Dimensions.posXSensorOneFactor * parent.width
+            startPosX:          Dimensions.sensorOneHorizontalCenterFactor * parent.width
             startPosY:          conveyor.y + conveyor.height / 2
             stopPosY:           lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
             conveyorSpeed:      1500
-            lightbarrierAfterDetectorXPos: Dimensions.posXSensorTwoFactor * parent.width
+            lightbarrierAfterDetectorXPos: Dimensions.sensorTwoHorizontalCenterFactor * parent.width
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
         }
     }

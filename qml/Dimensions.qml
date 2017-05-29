@@ -9,14 +9,14 @@ QtObject {
     readonly property double undefinedBinWidth: conveyorHeight
     readonly property double undefinedBinHeight: conveyorHeight
 
-    readonly property double posXColorDetector: 11.0
+    readonly property double colorDetectorHorizontalCenter: 11.0
 
-    readonly property double posXSensorOne: 3.0
-    readonly property double posXSensorTwo: 21.5
+    readonly property double sensorOneHorizontalCenter: 3.0
+    readonly property double sensorTwoHorizontalCenter: 21.5
 
-    readonly property double posXEjectorOne: 24.0
-    readonly property double posXEjectorTwo: 29.5
-    readonly property double posXEjectorThree: 35.7
+    readonly property double ejectorOneHorizontalCenter: 24.0
+    readonly property double ejectorTwoHorizontalCenter: 29.5
+    readonly property double ejectorThreeHorizontalCenter: 35.7
     readonly property double ejectorHeight: 3.0
     readonly property double ejectorWidth: 3.0 // todo: measure model
     readonly property double slideHeight: 7.0
@@ -26,7 +26,6 @@ QtObject {
     readonly property double simulatorWidth: conveyorWidth + undefinedBinWidth
 
     // calculated factors based on space used for simulator item
-
     readonly property double conveyorHeightFactor: conveyorHeight / simulatorHeight
     readonly property double conveyorWidthFactor: conveyorWidth / simulatorWidth
     readonly property double conveyorVerticalCenterFactor: (ejectorHeight + (conveyorHeight / 2)) / simulatorHeight
@@ -34,16 +33,16 @@ QtObject {
     readonly property double undefinedBinHeightFactor: undefinedBinHeight / simulatorHeight
     readonly property double undefinedBinWidthFactor: undefinedBinWidth / simulatorWidth
 
-    readonly property double colorDetectorHoricontalCenterFactor: posXColorDetector / simulatorWidth
+    readonly property double colorDetectorHorizontalCenterFactor: colorDetectorHorizontalCenter / simulatorWidth
     readonly property double colorDetectorHeightFactor: conveyorHeightFactor * 1.5
 
-    readonly property double posXSensorOneFactor: posXSensorOne / simulatorWidth
-    readonly property double posXSensorTwoFactor: posXSensorTwo / simulatorWidth
-    readonly property double posYSensorFactor: (ejectorHeight + (conveyorHeight / 2)) / simulatorHeight
+    readonly property double sensorOneHorizontalCenterFactor: sensorOneHorizontalCenter / simulatorWidth
+    readonly property double sensorTwoHorizontalCenterFactor: sensorTwoHorizontalCenter / simulatorWidth
+    readonly property double sensorVerticalCenterFactor: (ejectorHeight + (conveyorHeight / 2)) / simulatorHeight
 
-    readonly property double ejectorOneHoricontalCenterFactor: posXEjectorOne / simulatorWidth
-    readonly property double ejectorTwoHoricontalCenterFactor: posXEjectorTwo / simulatorWidth
-    readonly property double ejectorThreeHoricontalCenterFactor: posXEjectorThree / simulatorWidth
+    readonly property double ejectorOneHorizontalCenterFactor: ejectorOneHorizontalCenter / simulatorWidth
+    readonly property double ejectorTwoHorizontalCenterFactor: ejectorTwoHorizontalCenter / simulatorWidth
+    readonly property double ejectorThreeHorizontalCenterFactor: ejectorThreeHorizontalCenter / simulatorWidth
     readonly property double ejectorHeightFactor: ejectorHeight / simulatorHeight
     readonly property double ejectorWidthFactor: ejectorWidth / simulatorWidth
     readonly property double slideHeightFactor: slideHeight / simulatorHeight
