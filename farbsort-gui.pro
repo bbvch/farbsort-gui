@@ -69,6 +69,7 @@ DISTFILES += \
     qml/components/LegendContent.qml \
     js/StoneHandler.js \
     qml/Dimensions.qml
+    qml/AnimationTimes.qml
 
 lupdate_only{
 SOURCES += $${DISTFILES}

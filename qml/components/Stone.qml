@@ -1,5 +1,7 @@
 import QtQuick 2.0
 
+import ".."
+
 Item {
     id: stoneObject
     state: "CREATED"
@@ -52,7 +54,6 @@ Item {
     function handleDetectorEndReached() {
         if("DETECTED" === state) {
             stoneObject._detectedTime = new Date()
-            updateConveyorAnimationTime()
             stoneObject.state = "MOVING"
             console.log("Stone: handled detectorEndReached event")
             return true;
@@ -94,12 +95,6 @@ Item {
         return trayId > 0
     }
 
-    function updateConveyorAnimationTime() {
-        var animationTime = stoneObject.conveyorSpeed / (stoneObject.lightbarrierAfterDetectorXPos - stoneObject.startPosX) * (stoneObject.destinationXPos - stoneObject.lightbarrierAfterDetectorXPos)
-        //console.info("animationTime from afterDetector to endPosition is " + animationTime)
-        conveyorAnimation.duration = animationTime
-    }
-
     function handleReachedTray(trayId) {
         return "REACHED" === stoneObject.state && trayId === stoneObject.trayId
     }
@@ -113,7 +108,7 @@ Item {
         from: startPosX - stoneObject.radius
         to: lightbarrierAfterDetectorXPos - stoneObject.radius
         easing.type: Easing.Linear
-        duration: conveyorSpeed
+        duration: AnimationTimes.timeFromSensorOneToSensorTwo
         running: false
     }
 
@@ -126,7 +121,7 @@ Item {
         from: lightbarrierAfterDetectorXPos - stoneObject.radius
         to: destinationXPos - stoneObject.radius
         easing.type: Easing.Linear
-        duration: conveyorSpeed
+        duration: AnimationTimes.timesFromSensorTwoToEndOnConveyor[stoneObject.trayId]
         running: false
         onRunningChanged: {
             if(!running && !needsEjection()) {
@@ -143,7 +138,7 @@ Item {
         from: stoneObject.startPosY - stoneObject.radius
         to: stoneObject.stopPosY - stoneObject.radius
         easing.type: Easing.Linear
-        duration: 300
+        duration: AnimationTimes.timeFromEjectorToBin
         running: false
     }
 

@@ -278,7 +278,6 @@ Rectangle {
             startPosX:          Dimensions.sensorOneHorizontalCenterFactor * parent.width
             startPosY:          conveyor.y + conveyor.height / 2
             stopPosY:           lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
-            conveyorSpeed:      1500
             lightbarrierAfterDetectorXPos: Dimensions.sensorTwoHorizontalCenterFactor * parent.width
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
         }
