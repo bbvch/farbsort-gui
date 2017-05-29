@@ -411,7 +411,6 @@ Rectangle {
             startPosX:          layoutGrid.x + bevorColorRecognition.x + bevorColorRecognition.width / 2
             startPosY:          conveyor.y + conveyor.height / 2
             stopPosY:           layoutGrid.y + lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
-            conveyorSpeed:      1500
             lightbarrierAfterDetectorXPos: layoutGrid.x + afterColorRecognition.x + afterColorRecognition.width / 2
             destinationXPos:    unidentifiedObjectBin.x + unidentifiedObjectBin.width / 2
         }

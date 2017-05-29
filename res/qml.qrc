@@ -24,6 +24,7 @@
         <file alias="Style.qml">../qml/Style.qml</file>
         <file alias="qmldir">../qml/qmldir</file>
         <file>../qml/screens/SettingsScreen/SettingsScreenTitle.qml</file>
+        <file alias="AnimationTimes.qml">../qml/AnimationTimes.qml</file>
     </qresource>
     <qresource prefix="/items">
         <file alias="Simulator.qml">../qml/items/Simulator.qml</file>
