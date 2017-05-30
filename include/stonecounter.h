@@ -15,7 +15,7 @@ class StoneCounter : public QObject
 signals:
     void countChanged();
     void averageTimeChanged();
-    void colorChanged(const QColor oldColor);
+    void colorChanged(const QColor& oldColor, const QColor& newColor);
     void nameChanged();
 
 public:

@@ -12,7 +12,7 @@ void StoneCounter::setColor(const QColor color)
     const QColor oldColor(m_color);
     if(color != m_color) {
         m_color = color;
-        emit colorChanged(oldColor);
+        emit colorChanged(oldColor, color);
         emit nameChanged();
     }
 }

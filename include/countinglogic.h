@@ -33,7 +33,7 @@ protected slots:
     /// ensure that the same color is used only once
     /// by assigning the old color to the other tray
     /// with the same color.
-    void ensureSameColorIsUsedOnce(const QColor oldColor);
+    void ensureSameColorIsUsedOnce(const QColor& oldColor, const QColor& newColor);
 
 private:
     QVector<QSharedPointer<StoneCounter>> m_stoneCounters;
