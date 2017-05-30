@@ -9,9 +9,10 @@ QColor StoneCounter::color() const
 
 void StoneCounter::setColor(const QColor color)
 {
+    const QColor oldColor(m_color);
     if(color != m_color) {
         m_color = color;
-        emit colorChanged();
+        emit colorChanged(oldColor);
         emit nameChanged();
     }
 }

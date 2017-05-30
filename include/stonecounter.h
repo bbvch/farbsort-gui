@@ -15,20 +15,20 @@ class StoneCounter : public QObject
 signals:
     void countChanged();
     void averageTimeChanged();
-    void colorChanged();
+    void colorChanged(const QColor oldColor);
     void nameChanged();
 
 public:
     explicit StoneCounter(const QColor color);
     void addStone(const unsigned int timeNeeded);
+    QColor color() const;
+    unsigned int count() const;
+    QString name() const;
 
 protected:
-    QColor color() const;
     void setColor(const QColor color);
-    unsigned int count() const;
     void resetCount();
     unsigned int averageTime() const;
-    QString name() const;
 
 private:
     QColor m_color{Qt::transparent};
