@@ -280,6 +280,7 @@ Rectangle {
         Tray {
             id: lightbarrierTrayOne
             trayColor: "white"
+            trayId: 1
             lightbarrierInterruted: false
 
             Layout.row: 4
@@ -304,8 +305,8 @@ Rectangle {
 
         Tray {
             id: lightbarrierTrayTwo
-            width: 40
             trayColor: "red"
+            trayId: 2
             lightbarrierInterruted: false
             Layout.row: 4
             Layout.rowSpan: 2
@@ -346,6 +347,7 @@ Rectangle {
         Tray {
             id: lightbarrierTrayThree
             trayColor: "lightblue"
+            trayId: 3
             lightbarrierInterruted: false
             Layout.row: 4
             Layout.rowSpan: 2

@@ -1,4 +1,7 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.0
+
+import "../components"
 
 Item {
     id: tray
@@ -9,6 +12,7 @@ Item {
 
     property bool lightbarrierInterruted: false
     property alias trayColor: trayRect.color
+    property int trayId: 0
     property int trayRectVerticalMiddle: trayRect.y + trayRect.height / 2
 
     Rectangle {
@@ -30,6 +34,30 @@ Item {
         height: width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                colorPopup.color = trayRect.color
+                colorPopup.open()
+            }
+        }
+
+        ChooseTrayColor {
+            id: colorPopup
+            height: trayRect.height
+            width: trayRect.width * 3
+
+            onClosed: {
+                if (1 === trayId) {
+                    countingLogic.trayOneStoneCounter.color = colorPopup.color
+                } else if (2 === trayId) {
+                    countingLogic.trayTwoStoneCounter.color = colorPopup.color
+                } else if (3 === trayId) {
+                    countingLogic.trayThreeStoneCounter.color = colorPopup.color
+                }
+            }
+        }
     }
 
     LightBarrier {
@@ -41,5 +69,9 @@ Item {
 //        anchors.horizontalCenter: parent.horizontalCenter
 //        anchors.right: parent.right
         anchors.centerIn: trayRect
+        Rectangle{
+            id: trayColor
+            color: "white"
+        }
     }
 }

@@ -68,7 +68,8 @@ DISTFILES += \
     qml/components/EventTableView.qml \
     qml/components/LegendContent.qml \
     js/StoneHandler.js \
-    qml/AnimationTimes.qml
+    qml/AnimationTimes.qml \
+    qml/components/ChooseTrayColor.qml
 
 lupdate_only{
 SOURCES += $${DISTFILES}
