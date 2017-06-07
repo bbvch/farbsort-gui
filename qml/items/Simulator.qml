@@ -274,7 +274,7 @@ Rectangle {
 
         Stone {
             id: stoneInstance
-            radius: conveyor.height / 4
+            radius:             Dimensions.stoneWidthFactor * parent.width / 2
             startPosX:          Dimensions.sensorOneHorizontalCenterFactor * parent.width
             startPosY:          conveyor.y + conveyor.height / 2
             stopPosY:           lightbarrierTrayOne.y + lightbarrierTrayOne.trayRectVerticalMiddle
