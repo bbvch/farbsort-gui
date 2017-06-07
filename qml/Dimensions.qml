@@ -11,8 +11,8 @@ QtObject {
     readonly property double undefinedBinWidth: conveyorHeight
     readonly property double undefinedBinHeight: conveyorHeight
 
-    readonly property double lightbarrierOneTwoHeight: conveyorHeight * 1.85
-    readonly property double lightbarrierOneTwoWidth: 0.5
+    readonly property double lightbarrierOneTwoWidth: 1
+    readonly property double lightbarrierOneTwoHeight: conveyorHeight + 2 * lightbarrierOneTwoWidth
 
     readonly property double colorDetectorHorizontalCenter: 11.0
     readonly property double colorDetectorWidth: 11.0
@@ -43,7 +43,7 @@ QtObject {
     readonly property double undefinedBinWidthFactor: undefinedBinWidth / simulatorWidth
 
     readonly property double lightbarrierOneTwoHeightFactor: lightbarrierOneTwoHeight / simulatorHeight
-    readonly property double lightbarrierOneTwoWidthFactor: lightbarrierOneTwoWidth / simulatorHeight
+    readonly property double lightbarrierOneTwoWidthFactor: lightbarrierOneTwoWidth / simulatorWidth
 
     readonly property double colorDetectorHorizontalCenterFactor: colorDetectorHorizontalCenter / simulatorWidth
     readonly property double colorDetectorHeightFactor: colorDetectorHeight / simulatorHeight

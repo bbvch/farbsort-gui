@@ -93,6 +93,7 @@ Rectangle {
     LightBarrier {
         id: bevorColorRecognition
         active:  lightbarrierBeforeColorDetectionState
+        lightBeamLength: conveyor.height
 
         height: Dimensions.lightbarrierOneTwoHeightFactor * parent.height
         width: Dimensions.lightbarrierOneTwoWidthFactor * parent.width
@@ -128,6 +129,7 @@ Rectangle {
     LightBarrier {
         id: afterColorRecognition
         active: lightbarrierAfterColorDetectionState
+        lightBeamLength: conveyor.height
 
         height: Dimensions.lightbarrierOneTwoHeightFactor * parent.height
         width: Dimensions.lightbarrierOneTwoWidthFactor * parent.width
@@ -213,17 +215,17 @@ Rectangle {
         lightbarrierInterruted: false
 
         height: Dimensions.slideHeightFactor * parent.height
-        width: Dimensions.slideWidthFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.width
         anchors.top: conveyor.bottom
         x: Dimensions.ejectorOneHorizontalCenterFactor * parent.width - width / 2
 
         Text{
             text:"S3"
             color: Style.textColor
-            anchors.top: parent.bottom
-            anchors.topMargin: -Style.smallMargin
+            anchors.bottom: parent.bottom
+            anchors.topMargin: Style.smallMargin
             anchors.left: parent.right
-            anchors.leftMargin: -(3*Style.smallMargin)
+            anchors.leftMargin: Style.smallMargin
         }
     }
 
@@ -233,7 +235,7 @@ Rectangle {
         lightbarrierInterruted: false
 
         height: Dimensions.slideHeightFactor * parent.height
-        width: Dimensions.slideWidthFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.width
         anchors.top: conveyor.bottom
         x: Dimensions.ejectorTwoHorizontalCenterFactor * parent.width - width / 2
 
@@ -241,10 +243,10 @@ Rectangle {
         Text{
             text:"S4"
             color: Style.textColor
-            anchors.top: parent.bottom
-            anchors.topMargin: -Style.smallMargin
+            anchors.bottom: parent.bottom
+            anchors.topMargin: Style.smallMargin
             anchors.left: parent.right
-            anchors.leftMargin: -(3*Style.smallMargin)
+            anchors.leftMargin: Style.smallMargin
         }
     }
 
@@ -255,17 +257,17 @@ Rectangle {
         lightbarrierInterruted: false
 
         height: Dimensions.slideHeightFactor * parent.height
-        width: Dimensions.slideWidthFactor * parent.height
+        width: Dimensions.slideWidthFactor * parent.width
         anchors.top: conveyor.bottom
         x: Dimensions.ejectorThreeHorizontalCenterFactor * parent.width - width / 2
 
         Text{
             text:"S5"
             color: Style.textColor
-            anchors.top: parent.bottom
-            anchors.topMargin: -Style.smallMargin
+            anchors.bottom: parent.bottom
+            anchors.topMargin: Style.smallMargin
             anchors.left: parent.right
-            anchors.leftMargin: -(3*Style.smallMargin)
+            anchors.leftMargin: Style.smallMargin
         }
     }
 
