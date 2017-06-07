@@ -84,16 +84,9 @@ void WebSocketClientImplementation::sendProductionModeRequest(const bool active)
 
 void WebSocketClientImplementation::sendProductionStart(const bool active)
 {
-    if(active)
-    {
-        m_webSocket.sendTextMessage("start");
-        emit logMessageToBeDisplayed("Start production",LogEntry::LogLevel::Info);
-    }
-    else
-    {
-        m_webSocket.sendTextMessage("stop");
-        emit logMessageToBeDisplayed("Stop production",LogEntry::LogLevel::Info);
-    }
+    sendMotorRunningRequest(active);
+    sendCompressorRunningRequest(active);
+    emit logMessageToBeDisplayed(active ? "Start production" : "Stop production", LogEntry::LogLevel::Info);
 }
 
 void WebSocketClientImplementation::sendEmergencyStop()
