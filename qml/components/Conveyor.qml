@@ -1,5 +1,7 @@
 import QtQuick 2.0
 
+import ".."
+
 Item {
     id: conveyor
     width: 610
@@ -11,6 +13,7 @@ Item {
     Rectangle {
         id: conveyorArea
         anchors.fill: parent
+        anchors.margins: Style.smallMargin
         color: "#eceff1"
 
         property int numberOfElements: 27

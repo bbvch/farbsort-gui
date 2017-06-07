@@ -68,8 +68,7 @@ Rectangle {
         y: Dimensions.conveyorVerticalCenterFactor * parent.height - height / 2
         //anchors.left: parent.left
         //anchors.right: unidentifiedObjectBin.left
-        anchors.leftMargin: Style.smallMargin
-        anchors.rightMargin: Style.smallMargin
+        anchors.margins: Style.smallMargin
 
         velocity: 5.7
     }
@@ -153,7 +152,7 @@ Rectangle {
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorOneHorizontalCenterFactor * parent.width - width / 2
 
-        ejectDistance: conveyor.height/2
+        ejectDistance: conveyor.height
 
         Text{
             text:"A1"
@@ -174,7 +173,7 @@ Rectangle {
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorTwoHorizontalCenterFactor * parent.width - width / 2
 
-        ejectDistance: conveyor.height/2
+        ejectDistance: conveyor.height
 
         Text{
             text:"A2"
@@ -195,7 +194,7 @@ Rectangle {
         anchors.bottom: conveyor.top
         x: Dimensions.ejectorThreeHorizontalCenterFactor * parent.width - width / 2
 
-        ejectDistance: conveyor.height/2
+        ejectDistance: conveyor.height
 
         Text{
             text:"A3"
