@@ -6,8 +6,6 @@ Item {
     id: ejector
     width: 40
     height: 150
-//    color: "transparent"
-//    border.color: "gray"
 
     readonly property alias state: ejectorPin.state
     property int ejectDistance: height / 3
@@ -24,7 +22,7 @@ Item {
     Rectangle {
         id: ejectorSleeve
         anchors.fill: parent
-        anchors.bottomMargin: Style.bigMargin
+        anchors.bottomMargin: Style.medMargin
         color: "#C4CACD"
         opacity: 0.5
         z:1
