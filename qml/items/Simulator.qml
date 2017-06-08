@@ -76,7 +76,10 @@ Item {
             color: "white"
 
             anchors.fill: parent
-            anchors.margins: Style.smallMargin
+            anchors.topMargin: 2 * Style.bigMargin
+            anchors.bottomMargin: 2 * Style.bigMargin
+            anchors.leftMargin: Style.smallMargin
+            anchors.rightMargin: Style.smallMargin
 
             width: Dimensions.simulatorWidth
             height: Dimensions.simulatorHeight
