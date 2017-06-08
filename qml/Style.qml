@@ -3,8 +3,8 @@ pragma Singleton
 
 QtObject {
     property int bigMargin:  16
-    property int medMargin:  12
-    property int smallMargin: 8
+    property int medMargin:  8
+    property int smallMargin: 4
 
     property int mainTitleFontSize: 28
     property int titleFontSize:     24
