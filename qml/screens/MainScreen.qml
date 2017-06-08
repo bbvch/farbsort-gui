@@ -71,7 +71,6 @@ Rectangle {
             Layout.preferredWidth: parent.width * 0.75
             Layout.preferredHeight: parent.height * 0.75
             Layout.alignment: Qt.AlignTop | Qt.AlignLeft
-            Layout.margins: 0
         }
 
         StartStopControl {

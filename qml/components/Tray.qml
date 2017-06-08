@@ -7,8 +7,6 @@ Item {
     id: tray
     width: 100
     height: 150
-//    color:"transparent"
-//    border.color: "gray"
 
     property bool lightbarrierInterruted: false
     property alias trayColor: trayRect.color
@@ -17,7 +15,7 @@ Item {
 
     Rectangle {
         id: backgroundChannel
-        width: parent.width/3
+        width: parent.width
         anchors.top: parent.top
         anchors.bottom: trayRect.top
         anchors.horizontalCenter: parent.horizontalCenter
@@ -28,10 +26,10 @@ Item {
         id: trayRect
         color: "white"
         border.color: "lightgrey"
-        border.width: 2
+        border.width: 1
         radius: 4
-        width: 1.4*parent.width/3
-        height: width
+        width: parent.width
+        height: parent.height * .33
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
 
@@ -45,8 +43,8 @@ Item {
 
         ChooseTrayColor {
             id: colorPopup
-            height: trayRect.height
-            width: trayRect.width * 3
+            height: parent.height
+            width: parent.width * 3
 
             onClosed: {
                 if (1 === trayId) {
@@ -62,16 +60,16 @@ Item {
 
     LightBarrier {
         id:lightBarrier
-        width: 1.5*parent.width/6
-        height: parent.width
+        width: trayRect.height / 2
+        height: trayRect.width + 2 * 20
         rotation: 90
         active: lightbarrierInterruted
-//        anchors.horizontalCenter: parent.horizontalCenter
-//        anchors.right: parent.right
+        lightBeamLength: trayRect.width
         anchors.centerIn: trayRect
         Rectangle{
             id: trayColor
             color: "white"
         }
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }

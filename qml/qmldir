@@ -1,2 +1,3 @@
 singleton Style 1.0 Style.qml
+singleton Dimensions 1.0 Dimensions.qml
 singleton AnimationTimes 1.0 AnimationTimes.qml
