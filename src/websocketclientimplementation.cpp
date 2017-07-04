@@ -84,8 +84,19 @@ void WebSocketClientImplementation::sendProductionModeRequest(const bool active)
 
 void WebSocketClientImplementation::sendProductionStart(const bool active)
 {
-    sendMotorRunningRequest(active);
-    sendCompressorRunningRequest(active);
+    if(active != m_motorRunning) {
+        if(active) {
+            m_webSocket.sendTextMessage("start");
+        } else {
+            m_webSocket.sendTextMessage("stop");
+        }
+    }
+
+    // workaround to start compressor (see https://github.com/bbvch/farbsort-websocket/issues/4)
+    if(active != m_compressorRunning) {
+        sendCompressorRunningRequest(active);
+    }
+
     emit logMessageToBeDisplayed(active ? "Start production" : "Stop production", LogEntry::LogLevel::Info);
 }
 
