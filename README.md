@@ -30,7 +30,7 @@ Start [farbsort-websocket](https://github.com/bbvch/farbsort-websocket) service 
 
 #### Create container
 
-    docker build -t farbsor-gui/qt-dev-env .
+    docker build -t farbsort-gui/qt-dev-env .
 
 #### Start IDE
 
@@ -38,5 +38,5 @@ Start [farbsort-websocket](https://github.com/bbvch/farbsort-websocket) service 
     mkdir config
     
     # run container with created config folder
-    docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ${PWD}:/home/developer/farbsort-gui -v ${PWD}/config:/home/developer/.config/QtProject --workdir=/home/developer/farbsort-gui farbsor-gui/qt-dev-env
+    docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ${PWD}:/home/${USER}/farbsort-gui -v ${PWD}/config:/home/${USER}/.config/QtProject --workdir=/home/${USER}/farbsort-gui farbsort-gui/qt-dev-env
 
