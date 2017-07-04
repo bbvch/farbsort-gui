@@ -89,7 +89,6 @@ Rectangle {
             active: websocketClient.motorRunning
 
             onButtonToggled: {
-                websocketClient.sendCompressorRunningRequest(state)
                 websocketClient.sendProductionStart(state)
             }
         }
