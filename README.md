@@ -10,7 +10,7 @@ QML user interface for farbsort showcase.
 ### Build
 
     mkdir build && cd build
-    qmake ..
+    qmake ../farbsort-gui.pro
     make -j $(nproc)
 
 ### Run
@@ -39,4 +39,3 @@ Start [farbsort-websocket](https://github.com/bbvch/farbsort-websocket) service 
     
     # run container with created config folder
     docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v ${PWD}:/home/${USER}/farbsort-gui -v ${PWD}/config:/home/${USER}/.config/QtProject --workdir=/home/${USER}/farbsort-gui farbsort-gui/qt-dev-env
-
